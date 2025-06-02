@@ -15,6 +15,8 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showControls, setShowControls] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -30,30 +32,38 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
     };
 
     const handleError = (e: Event) => {
-      console.log("Video error handled:", e);
-      // For demo purposes, simulate video progress
-      setTimeout(() => onVideoEnd?.(), 5000);
+      console.log("Video error for:", video.title, e);
+      setVideoError(true);
+      setVideoLoaded(false);
     };
 
     const handleLoadedData = () => {
+      setVideoLoaded(true);
+      setVideoError(false);
       // Auto-play video when loaded
       videoElement.play().catch((error) => {
-        console.log("Autoplay prevented:", error);
-        // Fallback: simulate video playing
-        setIsPlaying(true);
+        console.log("Autoplay prevented for:", video.title, error);
+        setIsPlaying(false);
       });
+    };
+
+    const handleCanPlay = () => {
+      setVideoLoaded(true);
+      setVideoError(false);
     };
 
     videoElement.addEventListener("timeupdate", handleTimeUpdate);
     videoElement.addEventListener("ended", handleEnded);
     videoElement.addEventListener("error", handleError);
     videoElement.addEventListener("loadeddata", handleLoadedData);
+    videoElement.addEventListener("canplay", handleCanPlay);
 
     return () => {
       videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       videoElement.removeEventListener("ended", handleEnded);
       videoElement.removeEventListener("error", handleError);
       videoElement.removeEventListener("loadeddata", handleLoadedData);
+      videoElement.removeEventListener("canplay", handleCanPlay);
     };
   }, [video.id, onVideoEnd]);
 
@@ -87,7 +97,7 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       {/* Video Element */}
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
+        className={`absolute inset-0 w-full h-full object-cover ${videoError ? 'hidden' : ''}`}
         src={video.videoUrl}
         playsInline
         loop={false}
@@ -101,18 +111,33 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
         Your browser does not support the video tag.
       </video>
       
-      {/* Fallback image if video fails */}
+      {/* Fallback image when video fails or is loading */}
       <img
         src={video.thumbnailUrl}
         alt={video.title}
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ display: 'none' }}
-        onError={() => {
-          // Show thumbnail if video fails
-          const img = document.querySelector(`img[alt="${video.title}"]`) as HTMLImageElement;
-          if (img) img.style.display = 'block';
-        }}
+        className={`absolute inset-0 w-full h-full object-cover ${videoLoaded && !videoError ? 'hidden' : ''}`}
       />
+      
+      {/* Error indicator */}
+      {videoError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+          <div className="text-center text-white">
+            <div className="text-4xl mb-2">⚠️</div>
+            <div className="text-sm">Video format not supported</div>
+            <div className="text-xs opacity-70 mt-1">{video.title}</div>
+          </div>
+        </div>
+      )}
+      
+      {/* Loading indicator */}
+      {!videoLoaded && !videoError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          <div className="text-white text-center">
+            <div className="animate-spin w-8 h-8 border-2 border-white border-t-transparent rounded-full mx-auto mb-2"></div>
+            <div className="text-sm">Loading video...</div>
+          </div>
+        </div>
+      )}
 
       {/* Video Controls Overlay */}
       {showControls && (
