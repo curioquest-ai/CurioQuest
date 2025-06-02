@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { ArrowLeft, Star, Flame, Medal, Zap, Trophy, Calculator, Book, FlaskRound, Atom, Dna, ChevronRight, Play, CheckCircle, Lock, TrendingUp } from "lucide-react";
+import { ArrowLeft, Star, Flame, Medal, Zap, Trophy, Calculator, Book, FlaskRound, Atom, Dna, ChevronRight, ChevronDown, Play, CheckCircle, Lock, TrendingUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useAuth } from "@/hooks/use-auth";
 import BottomNavigation from "@/components/bottom-navigation";
 
@@ -238,144 +239,153 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + index * 0.1 }}
                 >
-                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                    <CardContent className="p-0">
-                      {/* Subject Header */}
-                      <div 
-                        className="p-6 pb-4 text-white relative overflow-hidden"
-                        style={{ 
-                          background: `linear-gradient(135deg, ${item.subject.color} 0%, ${item.subject.color}cc 100%)` 
-                        }}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
-                        <div className="relative flex items-center justify-between">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                              <IconComponent className="w-6 h-6" />
-                            </div>
-                            <div>
-                              <h3 className="text-xl font-bold">{item.subject.name}</h3>
-                              <p className="text-white/80 text-sm">
-                                {item.completedTopics} of {item.subject.totalTopics} chapters completed
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold">{percentage}%</div>
-                            <div className="text-white/80 text-sm">Complete</div>
-                          </div>
-                        </div>
-                        
-                        {/* Progress Bar */}
-                        <div className="mt-4 relative">
-                          <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
-                            <motion.div 
-                              className="h-full bg-white rounded-full"
-                              initial={{ width: 0 }}
-                              animate={{ width: `${percentage}%` }}
-                              transition={{ delay: 0.5 + index * 0.1, duration: 1 }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Chapter List */}
-                      <div className="p-6 pt-4">
-                        <div className="space-y-3">
-                          {chapters.map((chapter, chapterIndex) => {
-                            const isCompleted = chapterIndex < item.completedTopics;
-                            const isCurrent = chapterIndex === item.completedTopics;
-                            const isLocked = chapterIndex > item.completedTopics;
-                            
-                            return (
-                              <motion.div
-                                key={chapterIndex}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.6 + index * 0.1 + chapterIndex * 0.05 }}
-                                className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
-                                  isCompleted 
-                                    ? 'bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800' 
-                                    : isCurrent 
-                                    ? 'bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 ring-1 ring-blue-300 dark:ring-blue-700' 
-                                    : 'bg-muted/50 border border-border'
-                                } ${isCurrent ? 'shadow-sm' : ''}`}
-                              >
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                  isCompleted 
-                                    ? 'bg-green-500 text-white' 
-                                    : isCurrent 
-                                    ? 'bg-blue-500 text-white' 
-                                    : 'bg-muted text-muted-foreground'
-                                }`}>
-                                  {isCompleted ? (
-                                    <CheckCircle className="w-4 h-4" />
-                                  ) : isCurrent ? (
-                                    <Play className="w-4 h-4" />
-                                  ) : (
-                                    <Lock className="w-4 h-4" />
-                                  )}
-                                </div>
-                                
-                                <div className="flex-1">
-                                  <p className={`font-medium ${
-                                    isCompleted 
-                                      ? 'text-green-700 dark:text-green-300' 
-                                      : isCurrent 
-                                      ? 'text-blue-700 dark:text-blue-300' 
-                                      : 'text-muted-foreground'
-                                  }`}>
-                                    Chapter {chapterIndex + 1}: {chapter.title}
-                                  </p>
-                                  <p className={`text-sm ${
-                                    isCompleted 
-                                      ? 'text-green-600 dark:text-green-400' 
-                                      : isCurrent 
-                                      ? 'text-blue-600 dark:text-blue-400' 
-                                      : 'text-muted-foreground/70'
-                                  }`}>
-                                    {chapter.description}
-                                  </p>
-                                </div>
-                                
-                                {isCurrent && (
-                                  <motion.div
-                                    animate={{ x: [0, 4, 0] }}
-                                    transition={{ duration: 1.5, repeat: Infinity }}
-                                  >
-                                    <ChevronRight className="w-5 h-5 text-blue-500" />
-                                  </motion.div>
-                                )}
-                                
-                                {isCompleted && (
-                                  <div className="text-green-500 text-sm font-medium">
-                                    ✓ Done
-                                  </div>
-                                )}
-                              </motion.div>
-                            );
-                          })}
-                        </div>
-                        
-                        {percentage === 100 && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1 }}
-                            className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg text-center"
+                  <Collapsible>
+                    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
+                      <CardContent className="p-0">
+                        {/* Subject Header - Collapsible Trigger */}
+                        <CollapsibleTrigger className="w-full">
+                          <div 
+                            className="p-6 text-white relative overflow-hidden cursor-pointer hover:brightness-110 transition-all duration-200"
+                            style={{ 
+                              background: `linear-gradient(135deg, ${item.subject.color} 0%, ${item.subject.color}cc 100%)` 
+                            }}
                           >
-                            <div className="flex items-center justify-center space-x-2 text-green-700 dark:text-green-300">
-                              <Trophy className="w-5 h-5" />
-                              <span className="font-semibold">Subject Complete!</span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+                            <div className="relative flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                                  <IconComponent className="w-6 h-6" />
+                                </div>
+                                <div className="text-left">
+                                  <h3 className="text-xl font-bold">{item.subject.name}</h3>
+                                  <p className="text-white/80 text-sm">
+                                    {item.completedTopics} of {item.subject.totalTopics} chapters completed
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <div className="text-right">
+                                  <div className="text-2xl font-bold">{percentage}%</div>
+                                  <div className="text-white/80 text-sm">Complete</div>
+                                </div>
+                                <ChevronDown className="w-5 h-5 text-white/80 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                              </div>
                             </div>
-                            <p className="text-sm text-green-600 dark:text-green-400 mt-1">
-                              Congratulations on mastering {item.subject.name}!
-                            </p>
-                          </motion.div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
+                            
+                            {/* Progress Bar */}
+                            <div className="mt-4 relative">
+                              <div className="w-full h-2 bg-white/20 rounded-full overflow-hidden">
+                                <motion.div 
+                                  className="h-full bg-white rounded-full"
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${percentage}%` }}
+                                  transition={{ delay: 0.5 + index * 0.1, duration: 1 }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </CollapsibleTrigger>
+                        
+                        {/* Chapter List - Collapsible Content */}
+                        <CollapsibleContent>
+                          <div className="p-6 pt-4 border-t border-border/50">
+                            <div className="space-y-3">
+                              {chapters.map((chapter, chapterIndex) => {
+                                const isCompleted = chapterIndex < item.completedTopics;
+                                const isCurrent = chapterIndex === item.completedTopics;
+                                const isLocked = chapterIndex > item.completedTopics;
+                                
+                                return (
+                                  <motion.div
+                                    key={chapterIndex}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1 + chapterIndex * 0.05 }}
+                                    className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-200 ${
+                                      isCompleted 
+                                        ? 'bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800' 
+                                        : isCurrent 
+                                        ? 'bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 ring-1 ring-blue-300 dark:ring-blue-700' 
+                                        : 'bg-muted/50 border border-border'
+                                    } ${isCurrent ? 'shadow-sm' : ''}`}
+                                  >
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                                      isCompleted 
+                                        ? 'bg-green-500 text-white' 
+                                        : isCurrent 
+                                        ? 'bg-blue-500 text-white' 
+                                        : 'bg-muted text-muted-foreground'
+                                    }`}>
+                                      {isCompleted ? (
+                                        <CheckCircle className="w-4 h-4" />
+                                      ) : isCurrent ? (
+                                        <Play className="w-4 h-4" />
+                                      ) : (
+                                        <Lock className="w-4 h-4" />
+                                      )}
+                                    </div>
+                                    
+                                    <div className="flex-1">
+                                      <p className={`font-medium ${
+                                        isCompleted 
+                                          ? 'text-green-700 dark:text-green-300' 
+                                          : isCurrent 
+                                          ? 'text-blue-700 dark:text-blue-300' 
+                                          : 'text-muted-foreground'
+                                      }`}>
+                                        Chapter {chapterIndex + 1}: {chapter.title}
+                                      </p>
+                                      <p className={`text-sm ${
+                                        isCompleted 
+                                          ? 'text-green-600 dark:text-green-400' 
+                                          : isCurrent 
+                                          ? 'text-blue-600 dark:text-blue-400' 
+                                          : 'text-muted-foreground/70'
+                                      }`}>
+                                        {chapter.description}
+                                      </p>
+                                    </div>
+                                    
+                                    {isCurrent && (
+                                      <motion.div
+                                        animate={{ x: [0, 4, 0] }}
+                                        transition={{ duration: 1.5, repeat: Infinity }}
+                                      >
+                                        <ChevronRight className="w-5 h-5 text-blue-500" />
+                                      </motion.div>
+                                    )}
+                                    
+                                    {isCompleted && (
+                                      <div className="text-green-500 text-sm font-medium">
+                                        ✓ Done
+                                      </div>
+                                    )}
+                                  </motion.div>
+                                );
+                              })}
+                            </div>
+                            
+                            {percentage === 100 && (
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.5 }}
+                                className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border border-green-200 dark:border-green-800 rounded-lg text-center"
+                              >
+                                <div className="flex items-center justify-center space-x-2 text-green-700 dark:text-green-300">
+                                  <Trophy className="w-5 h-5" />
+                                  <span className="font-semibold">Subject Complete!</span>
+                                </div>
+                                <p className="text-sm text-green-600 dark:text-green-400 mt-1">
+                                  Congratulations on mastering {item.subject.name}!
+                                </p>
+                              </motion.div>
+                            )}
+                          </div>
+                        </CollapsibleContent>
+                      </CardContent>
+                    </Card>
+                  </Collapsible>
                 </motion.div>
               );
             })}
