@@ -40,7 +40,10 @@ export default function AITeacher() {
 
   const sendMessageMutation = useMutation({
     mutationFn: async (message: string) => {
-      const response = await apiRequest("POST", "/api/ai-teacher/chat", { message });
+      const response = await apiRequest("POST", "/api/ai-teacher/chat", { 
+        message,
+        userId: user?.id 
+      });
       return response.json();
     },
     onSuccess: (data) => {
