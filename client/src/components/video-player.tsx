@@ -11,12 +11,24 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ video, onVideoEnd, className = "" }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showControls, setShowControls] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+
+  // Reset thumbnail when video changes
+  useEffect(() => {
+    if (thumbnailUrl) {
+      URL.revokeObjectURL(thumbnailUrl);
+      setThumbnailUrl(null);
+    }
+    setVideoLoaded(false);
+    setVideoError(false);
+  }, [video.id]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -40,11 +52,40 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
     const handleLoadedData = () => {
       setVideoLoaded(true);
       setVideoError(false);
+      
+      // Extract first frame as thumbnail
+      extractFirstFrame();
+      
       // Auto-play video when loaded
       videoElement.play().catch((error) => {
         console.log("Autoplay prevented for:", video.title, error);
         setIsPlaying(false);
       });
+    };
+
+    const extractFirstFrame = () => {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      
+      if (!canvas || !video) return;
+      
+      // Set canvas dimensions to match video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      // Draw first frame to canvas
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Convert canvas to blob URL
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            setThumbnailUrl(url);
+          }
+        }, 'image/jpeg', 0.8);
+      }
     };
 
     const handleCanPlay = () => {
@@ -78,6 +119,15 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       videoElement.removeEventListener("pause", handlePause);
     };
   }, [video.id, onVideoEnd]);
+
+  // Cleanup thumbnail URL on unmount
+  useEffect(() => {
+    return () => {
+      if (thumbnailUrl) {
+        URL.revokeObjectURL(thumbnailUrl);
+      }
+    };
+  }, [thumbnailUrl]);
 
   const togglePlayPause = () => {
     const videoElement = videoRef.current;
@@ -125,9 +175,16 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       
       {/* Fallback image when video fails or is loading */}
       <img
-        src={video.thumbnailUrl}
+        src={thumbnailUrl || video.thumbnailUrl}
         alt={video.title}
         className={`absolute inset-0 w-full h-full object-contain ${videoLoaded && !videoError ? 'hidden' : ''}`}
+      />
+
+      {/* Hidden canvas for frame extraction */}
+      <canvas 
+        ref={canvasRef} 
+        className="hidden"
+        aria-hidden="true"
       />
       
       {/* Error indicator */}
