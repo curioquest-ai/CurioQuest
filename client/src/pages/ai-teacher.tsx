@@ -12,6 +12,7 @@ declare global {
       'elevenlabs-convai': {
         'agent-id': string;
         'override-agent-config'?: string;
+        style?: React.CSSProperties;
         children?: React.ReactNode;
       };
     }
@@ -92,48 +93,66 @@ export default function AITeacher() {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden"
-            style={{ height: '600px' }}
+            className="relative"
           >
-            {widgetLoaded ? (
-              <div className="w-full h-full bg-white rounded-2xl">
-                <elevenlabs-convai 
-                  agent-id="agent_01jwrh5g9pergrk651t512kmjg"
-                  override-agent-config={JSON.stringify(agentConfig)}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    border: 'none',
-                    borderRadius: '16px'
-                  }}
-                />
+            {/* Custom Header Overlay */}
+            <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-r from-purple-600 to-purple-500 rounded-t-2xl p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                  <User className="w-7 h-7 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-white text-lg font-bold">Ms. Priya Sharma</h2>
+                  <p className="text-white/80 text-sm">AI Teacher • Voice Enabled</p>
+                </div>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
-                <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center">
-                  <User className="w-12 h-12 text-white" />
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-white/80 text-xs">Ready</span>
+              </div>
+            </div>
+
+            {/* Widget Container */}
+            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden" style={{ height: '600px', marginTop: '0px' }}>
+              {widgetLoaded ? (
+                <div className="w-full h-full relative pt-16 pb-12">
+                  <elevenlabs-convai 
+                    agent-id="agent_01jwrh5g9pergrk651t512kmjg"
+                    override-agent-config={JSON.stringify(agentConfig)}
+                  />
                 </div>
-                
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-bold text-white">Ms. Priya Sharma</h2>
-                  <p className="text-white/80">Your AI Teacher</p>
-                </div>
-                
-                <div className="space-y-4">
-                  <p className="text-white/70 text-sm max-w-md">
-                    Loading ElevenLabs conversational AI widget...
-                  </p>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-6 pt-16">
+                  <div className="w-24 h-24 mx-auto bg-purple-100 rounded-full flex items-center justify-center">
+                    <User className="w-12 h-12 text-purple-600" />
+                  </div>
                   
-                  <div className="bg-white/5 rounded-lg p-4 max-w-sm mx-auto">
-                    <div className="animate-pulse flex space-x-1">
-                      <div className="rounded-full bg-white/40 h-2 w-2"></div>
-                      <div className="rounded-full bg-white/40 h-2 w-2"></div>
-                      <div className="rounded-full bg-white/40 h-2 w-2"></div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-gray-800">Initializing AI Teacher</h3>
+                    <p className="text-gray-600">Setting up your personalized learning session...</p>
+                  </div>
+                  
+                  <div className="bg-purple-50 rounded-lg p-4 max-w-sm mx-auto">
+                    <div className="animate-pulse flex justify-center space-x-1">
+                      <div className="rounded-full bg-purple-400 h-2 w-2"></div>
+                      <div className="rounded-full bg-purple-400 h-2 w-2 animation-delay-200"></div>
+                      <div className="rounded-full bg-purple-400 h-2 w-2 animation-delay-400"></div>
                     </div>
                   </div>
                 </div>
+              )}
+            </div>
+
+            {/* Custom Bottom Info */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-purple-600 to-purple-500 rounded-b-2xl p-3 z-10">
+              <div className="flex items-center justify-center space-x-2 text-white/80 text-xs">
+                <span>💬 Voice-powered learning</span>
+                <span>•</span>
+                <span>🎯 Personalized tutoring</span>
+                <span>•</span>
+                <span>📚 Grade {user?.grade || 'K-12'} curriculum</span>
               </div>
-            )}
+            </div>
           </motion.div>
         </div>
 

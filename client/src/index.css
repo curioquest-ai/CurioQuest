@@ -4,6 +4,24 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+/* ElevenLabs Widget Custom Styling */
+elevenlabs-convai {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+elevenlabs-convai * {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Custom animation delays */
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
 :root {
   --background: 215 28% 17%; /* #2D3436 */
   --foreground: 0 0% 100%; /* #FFFFFF */
