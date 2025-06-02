@@ -12,31 +12,31 @@ export default function AITeacher() {
   const [transcript, setTranscript] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
   const [currentLesson, setCurrentLesson] = useState("Quadratic Equations");
-  const [aiResponse, setAiResponse] = useState("Great! Now let's work through this step by step. Can you tell me what you think the first step should be when we see: x² + 5x - 6 = 0?");
+  const [aiResponse, setAiResponse] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [showVisualContent, setShowVisualContent] = useState(true);
   const [voiceHint, setVoiceHint] = useState("Say 'Help me understand' to get started");
 
   // Voice interaction functions
   const startVoiceInteraction = () => {
     setAiState("listening");
-    setVoiceHint("Listening... speak now");
+    setUserInput("");
+    setAiResponse("");
     
     // Simulate listening process
     setTimeout(() => {
       setAiState("processing");
-      setVoiceHint("Processing your response...");
+      setUserInput("I think we should factor the equation first.");
       setTranscript("I think we should factor the equation first.");
       
       // Simulate AI processing and response
       setTimeout(() => {
         setAiState("speaking");
-        setVoiceHint("AI is responding");
         setAiResponse("Excellent thinking! Yes, factoring is often the first approach. Let's factor x² + 5x - 6. What two numbers multiply to -6 and add to 5?");
         
         // After speaking, return to idle
         setTimeout(() => {
           setAiState("idle");
-          setVoiceHint("Say 'Continue' or ask a question");
         }, 3000);
       }, 2000);
     }, 3000);
@@ -44,25 +44,21 @@ export default function AITeacher() {
 
   const stopVoiceInteraction = () => {
     setAiState("idle");
-    setVoiceHint("Tap the microphone to speak");
   };
 
   const repeatLastResponse = () => {
     setAiState("speaking");
-    setVoiceHint("Repeating response...");
     setTimeout(() => {
       setAiState("idle");
-      setVoiceHint("Say 'Continue' or ask a question");
     }, 2000);
   };
 
   const getHint = () => {
     setAiState("speaking");
-    setVoiceHint("Providing hint...");
+    setUserInput("");
     setAiResponse("Here's a hint: Look for two numbers that when multiplied give you -6. Try thinking of factor pairs like 1 and -6, or 2 and -3.");
     setTimeout(() => {
       setAiState("idle");
-      setVoiceHint("Try solving it now, or ask for more help");
     }, 2500);
   };
 
@@ -189,26 +185,59 @@ export default function AITeacher() {
           </div>
         </motion.div>
 
-        {/* AI Response Card */}
-        <AnimatePresence>
-          {showVisualContent && aiResponse && aiState !== "listening" && (
-            <motion.div
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -30, scale: 0.9 }}
-              className="w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 px-2"
-            >
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
-                <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-4 text-center">
-                  {currentLesson}
-                </h3>
-                <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed text-center">
-                  {aiResponse}
+        {/* Content Display Card */}
+        <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 px-2">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl min-h-[120px] flex flex-col justify-center">
+            <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-4 text-center">
+              {currentLesson}
+            </h3>
+            
+            {/* Content based on state */}
+            {aiState === "idle" && !userInput && !aiResponse && (
+              <p className="text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed text-center italic">
+                Tap the microphone and say "Help me understand" to get started
+              </p>
+            )}
+            
+            {aiState === "listening" && (
+              <p className="text-blue-600 text-xs sm:text-sm md:text-base leading-relaxed text-center italic">
+                Listening... speak now
+              </p>
+            )}
+            
+            {aiState === "processing" && userInput && (
+              <div className="space-y-3">
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <p className="text-blue-700 text-xs sm:text-sm font-medium">You said:</p>
+                  <p className="text-gray-700 text-xs sm:text-sm">{userInput}</p>
+                </div>
+                <p className="text-yellow-600 text-xs sm:text-sm text-center italic">
+                  Processing your response...
                 </p>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            )}
+            
+            {(aiState === "speaking" || aiState === "idle") && userInput && aiResponse && (
+              <div className="space-y-3">
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <p className="text-blue-700 text-xs sm:text-sm font-medium">You said:</p>
+                  <p className="text-gray-700 text-xs sm:text-sm">{userInput}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3">
+                  <p className="text-green-700 text-xs sm:text-sm font-medium">AI Teacher:</p>
+                  <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{aiResponse}</p>
+                </div>
+              </div>
+            )}
+            
+            {(aiState === "speaking" || aiState === "idle") && !userInput && aiResponse && (
+              <div className="bg-green-50 rounded-lg p-3">
+                <p className="text-green-700 text-xs sm:text-sm font-medium">AI Teacher:</p>
+                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{aiResponse}</p>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Voice-First Control Interface */}
         <div className="flex items-center justify-center space-x-4 sm:space-x-6 md:space-x-8">
@@ -300,18 +329,7 @@ export default function AITeacher() {
           </div>
         </div>
 
-        {/* Voice Commands Hint */}
-        {aiState === "idle" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-3 sm:mt-4 md:mt-6 text-center px-4"
-          >
-            <p className="text-white/60 text-xs leading-relaxed">
-              Try saying: "Explain this step" • "I don't understand" • "Give me an example"
-            </p>
-          </motion.div>
-        )}
+
 
         {/* Transcript Display */}
         {transcript && showTranscript && (
