@@ -52,11 +52,21 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       setVideoError(false);
     };
 
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+    };
+
     videoElement.addEventListener("timeupdate", handleTimeUpdate);
     videoElement.addEventListener("ended", handleEnded);
     videoElement.addEventListener("error", handleError);
     videoElement.addEventListener("loadeddata", handleLoadedData);
     videoElement.addEventListener("canplay", handleCanPlay);
+    videoElement.addEventListener("play", handlePlay);
+    videoElement.addEventListener("pause", handlePause);
 
     return () => {
       videoElement.removeEventListener("timeupdate", handleTimeUpdate);
@@ -64,6 +74,8 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       videoElement.removeEventListener("error", handleError);
       videoElement.removeEventListener("loadeddata", handleLoadedData);
       videoElement.removeEventListener("canplay", handleCanPlay);
+      videoElement.removeEventListener("play", handlePlay);
+      videoElement.removeEventListener("pause", handlePause);
     };
   }, [video.id, onVideoEnd]);
 
@@ -71,12 +83,11 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
-    if (isPlaying) {
-      videoElement.pause();
+    if (videoElement.paused) {
+      videoElement.play().catch(console.error);
     } else {
-      videoElement.play();
+      videoElement.pause();
     }
-    setIsPlaying(!isPlaying);
   };
 
   const toggleMute = () => {
@@ -88,6 +99,7 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
   };
 
   const handleVideoClick = () => {
+    togglePlayPause();
     setShowControls(true);
     setTimeout(() => setShowControls(false), 3000);
   };
@@ -135,6 +147,15 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
           <div className="text-white text-center">
             <div className="animate-spin w-8 h-8 border-2 border-white border-t-transparent rounded-full mx-auto mb-2"></div>
             <div className="text-sm">Loading video...</div>
+          </div>
+        </div>
+      )}
+
+      {/* Pause indicator - shows when video is paused */}
+      {!isPlaying && videoLoaded && !videoError && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <div className="w-0 h-0 border-l-[16px] border-l-white border-t-[12px] border-t-transparent border-b-[12px] border-b-transparent ml-1"></div>
           </div>
         </div>
       )}
