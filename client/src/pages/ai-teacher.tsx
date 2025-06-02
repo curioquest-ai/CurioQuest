@@ -75,38 +75,41 @@ export default function AITeacher() {
     setAiState("processing");
     
     try {
-      // Check if this is a wake word
-      const wakeWord = `excuse me ${teacherGender === "female" ? "madam" : "sir"}`;
-      const isWakeWord = speechText.toLowerCase().includes(wakeWord);
+      // Call OpenAI API for response
+      const response = await fetch('/api/ai-teacher', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userMessage: speechText,
+          teacherGender,
+          isWakeWord: false
+        }),
+      });
       
-      if (isWakeWord || userInput) {
-        // Call OpenAI API for response
-        const response = await fetch('/api/ai-teacher', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userMessage: speechText,
-            teacherGender,
-            isWakeWord
-          }),
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to get AI response');
-        }
-        
-        const data = await response.json();
-        setAiResponse(data.response);
-        speakResponse(data.response);
-      } else {
-        setAiState("idle");
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
       }
+      
+      const data = await response.json();
+      setAiResponse(data.response);
+      speakResponse(data.response);
     } catch (error) {
       console.error('Error processing speech:', error);
-      setAiResponse("I'm sorry, I'm having trouble processing your request right now.");
-      speakResponse("I'm sorry, I'm having trouble processing your request right now.");
+      
+      // Fallback response when OpenAI is not available
+      const fallbackResponses = [
+        "That's a great question! Can you tell me more about what you're thinking?",
+        "I understand you're working on this. What part would you like to explore further?",
+        "Let's break this down step by step. What do you think the first step should be?",
+        "That's an interesting approach. Can you explain your reasoning?",
+        "I'm here to help you learn. What specific concept would you like me to explain?"
+      ];
+      
+      const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      setAiResponse(fallbackResponse);
+      speakResponse(fallbackResponse);
     }
   };
 
@@ -333,7 +336,7 @@ export default function AITeacher() {
             {/* Content based on state */}
             {aiState === "idle" && !userInput && !aiResponse && (
               <p className="text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed text-center italic">
-                Say "Excuse me {teacherGender === "female" ? "Madam" : "Sir"}" to get started
+                Tap the microphone and start speaking
               </p>
             )}
             
