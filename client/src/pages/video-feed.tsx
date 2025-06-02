@@ -249,19 +249,15 @@ export default function VideoFeed() {
       <div className="absolute inset-0 video-overlay pointer-events-none" />
 
       {/* Top UI Bar */}
-      <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 z-20 safe-area-inset">
-        <StreakIndicator streak={user?.currentStreak || 0} />
-        
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setLocation("/dashboard")}
-            className="text-white/80 hover:text-white hover:bg-white/20"
-          >
-            <ChartLine className="w-5 h-5" />
-          </Button>
-        </div>
+      <div className="absolute top-0 right-0 flex items-center p-4 z-20 safe-area-inset">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setLocation("/dashboard")}
+          className="text-white/80 hover:text-white hover:bg-white/20"
+        >
+          <ChartLine className="w-5 h-5" />
+        </Button>
       </div>
 
 
