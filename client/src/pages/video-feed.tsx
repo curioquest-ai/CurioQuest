@@ -248,56 +248,47 @@ export default function VideoFeed() {
       {/* Video overlay gradient */}
       <div className="absolute inset-0 video-overlay pointer-events-none" />
 
-      {/* Quiz Progress Indicator - Floating Top */}
+      {/* Dynamic Island Progress Indicator */}
       <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="fixed top-3 left-1/2 transform -translate-x-1/2 z-50"
       >
-        <div className="bg-black/60 backdrop-blur-md rounded-full px-4 py-2 border border-white/20 shadow-lg">
-          <div className="flex items-center space-x-3 text-white text-sm">
-            {/* Video Progress Dots */}
-            <div className="flex items-center space-x-1">
+        <div className="bg-black/90 backdrop-blur-xl rounded-full px-3 py-1.5 shadow-2xl border border-white/10">
+          <div className="flex items-center space-x-2 text-white text-xs">
+            {/* Compact Progress Dots */}
+            <div className="flex items-center space-x-0.5">
               {Array.from({ length: 4 }, (_, i) => (
                 <motion.div
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                    i < videosWatched ? 'bg-green-400 shadow-green-400/50 shadow-sm' : 
-                    i === videosWatched ? 'bg-blue-400 shadow-blue-400/50 shadow-sm' : 
-                    'bg-white/30'
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    i < videosWatched ? 'bg-green-400' : 
+                    i === videosWatched ? 'bg-white' : 
+                    'bg-white/20'
                   }`}
-                  animate={i === videosWatched ? { scale: [1, 1.3, 1] } : {}}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  animate={i === videosWatched ? { scale: [1, 1.4, 1] } : {}}
+                  transition={{ duration: 1.5, repeat: Infinity }}
                 />
               ))}
             </div>
             
-            {/* Separator */}
-            <div className="h-3 w-px bg-white/30" />
-            
-            {/* Quiz Countdown with Icon */}
-            <div className="flex items-center space-x-2">
+            {/* Quiz Indicator */}
+            <div className="flex items-center space-x-1">
               <motion.div
-                animate={{ rotate: timeUntilQuiz > 0 ? 360 : 0 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="w-3 h-3 border-2 border-white/30 border-t-accent rounded-full"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="w-2 h-2 border border-white/40 border-t-accent rounded-full"
               />
-              <span className="font-medium text-white">
-                Quiz in {videosUntilQuiz}
+              <span className="font-medium">
+                Quiz {videosUntilQuiz}
               </span>
             </div>
             
-            {/* Timer Display */}
-            {timeUntilQuiz > 0 && (
-              <>
-                <div className="h-3 w-px bg-white/30" />
-                <div className="flex items-center space-x-1">
-                  <span className="text-accent">⏱</span>
-                  <span className="font-mono text-white tabular-nums">
-                    {Math.floor(timeUntilQuiz / 60)}:{(timeUntilQuiz % 60).toString().padStart(2, '0')}
-                  </span>
-                </div>
-              </>
+            {/* Compact Timer */}
+            {timeUntilQuiz > 0 && timeUntilQuiz <= 60 && (
+              <span className="font-mono text-accent text-xs">
+                {timeUntilQuiz}s
+              </span>
             )}
           </div>
         </div>
