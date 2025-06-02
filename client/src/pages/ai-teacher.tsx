@@ -70,16 +70,8 @@ export default function AITeacher() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-50 p-4 sm:p-6">
         <div className="flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
-          >
-            <X className="w-5 h-5 sm:w-6 sm:h-6" />
-          </Button>
-
           {/* Progress Bar */}
-          <div className="flex-1 mx-4 sm:mx-6">
+          <div className="flex-1 mr-4 sm:mr-6">
             <div className="h-2 bg-white/20 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"
