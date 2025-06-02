@@ -11,6 +11,7 @@ import VideoFeed from "@/pages/video-feed";
 import Quiz from "@/pages/quiz";
 import Dashboard from "@/pages/dashboard";
 import Leaderboard from "@/pages/leaderboard";
+import Profile from "@/pages/profile";
 import NotFound from "@/pages/not-found";
 
 function AppRouter() {
@@ -32,6 +33,7 @@ function AppRouter() {
       <Route path="/quiz" component={Quiz} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/leaderboard" component={Leaderboard} />
+      <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
     </Switch>
   );

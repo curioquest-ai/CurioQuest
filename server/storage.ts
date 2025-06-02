@@ -117,7 +117,10 @@ export class MemStorage implements IStorage {
         school: "Lincoln High School",
         totalScore: 2850,
         currentStreak: 15,
+        longestStreak: 25,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 190,
+        quizzesCompleted: 114,
         createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
       },
       {
@@ -127,7 +130,10 @@ export class MemStorage implements IStorage {
         school: "Central Academy",
         totalScore: 2720,
         currentStreak: 12,
+        longestStreak: 18,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 181,
+        quizzesCompleted: 109,
         createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000)
       },
       {
@@ -137,7 +143,10 @@ export class MemStorage implements IStorage {
         school: "Riverside High",
         totalScore: 2610,
         currentStreak: 18,
+        longestStreak: 21,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 174,
+        quizzesCompleted: 104,
         createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
       },
       {
@@ -147,7 +156,10 @@ export class MemStorage implements IStorage {
         school: "Tech Valley High",
         totalScore: 2480,
         currentStreak: 8,
+        longestStreak: 15,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 165,
+        quizzesCompleted: 99,
         createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
       },
       {
@@ -157,7 +169,10 @@ export class MemStorage implements IStorage {
         school: "Innovation Academy",
         totalScore: 2390,
         currentStreak: 22,
+        longestStreak: 22,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 159,
+        quizzesCompleted: 96,
         createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000)
       },
       {
@@ -167,7 +182,10 @@ export class MemStorage implements IStorage {
         school: "Metro High School",
         totalScore: 2275,
         currentStreak: 6,
+        longestStreak: 14,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 152,
+        quizzesCompleted: 91,
         createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
       },
       {
@@ -177,7 +195,10 @@ export class MemStorage implements IStorage {
         school: "Eastside Academy",
         totalScore: 2150,
         currentStreak: 14,
+        longestStreak: 16,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 143,
+        quizzesCompleted: 86,
         createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000)
       },
       {
@@ -187,7 +208,10 @@ export class MemStorage implements IStorage {
         school: "Pioneer High",
         totalScore: 2040,
         currentStreak: 9,
+        longestStreak: 13,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 136,
+        quizzesCompleted: 82,
         createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000)
       },
       {
@@ -197,7 +221,10 @@ export class MemStorage implements IStorage {
         school: "Summit Academy",
         totalScore: 1920,
         currentStreak: 11,
+        longestStreak: 17,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 128,
+        quizzesCompleted: 77,
         createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
       },
       {
@@ -207,7 +234,10 @@ export class MemStorage implements IStorage {
         school: "Northside High",
         totalScore: 1850,
         currentStreak: 4,
+        longestStreak: 12,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 123,
+        quizzesCompleted: 74,
         createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000)
       },
       {
@@ -217,7 +247,10 @@ export class MemStorage implements IStorage {
         school: "Valley High School",
         totalScore: 1730,
         currentStreak: 16,
+        longestStreak: 19,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 115,
+        quizzesCompleted: 69,
         createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
       },
       {
@@ -227,7 +260,10 @@ export class MemStorage implements IStorage {
         school: "Westfield Academy",
         totalScore: 1640,
         currentStreak: 7,
+        longestStreak: 11,
         lastActiveDate: new Date().toISOString(),
+        videosWatched: 109,
+        quizzesCompleted: 66,
         createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
       }
     ];
