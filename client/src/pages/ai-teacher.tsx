@@ -168,7 +168,7 @@ What would you like to explore today? Feel free to ask me anything!`,
       </motion.div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-20">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-32">
         <AnimatePresence>
           {messages.map((message) => (
             <motion.div
@@ -238,7 +238,7 @@ What would you like to explore today? Feel free to ask me anything!`,
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-4 bg-white border-t border-gray-200"
+        className="fixed bottom-16 left-0 right-0 p-4 bg-white border-t border-gray-200 z-40"
       >
         <div className="flex items-end space-x-2">
           {/* Attachment Button */}
