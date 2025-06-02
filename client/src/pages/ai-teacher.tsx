@@ -199,7 +199,13 @@ export default function AITeacher() {
     if (recognitionRef.current && !isListening) {
       setUserInput("");
       setAiResponse("");
-      recognitionRef.current.start();
+      console.log('Starting speech recognition...');
+      try {
+        recognitionRef.current.start();
+      } catch (error) {
+        console.error('Error starting speech recognition:', error);
+        alert('Could not start speech recognition. Please check microphone permissions.');
+      }
     }
   };
 
@@ -340,6 +346,35 @@ export default function AITeacher() {
                   <Repeat className="w-5 h-5" />
                 </Button>
               )}
+            </div>
+
+            {/* Text Input Fallback */}
+            <div className="mt-6 space-y-3">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  placeholder="Type your question here..."
+                  className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && userInput.trim()) {
+                      handleUserSpeech(userInput.trim());
+                    }
+                  }}
+                  disabled={aiState === "processing" || aiState === "speaking"}
+                />
+                <Button
+                  onClick={() => userInput.trim() && handleUserSpeech(userInput.trim())}
+                  disabled={!userInput.trim() || aiState === "processing" || aiState === "speaking"}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-6"
+                >
+                  Ask
+                </Button>
+              </div>
+              <p className="text-white/60 text-xs text-center">
+                {speechSupported ? "Use voice or type your question" : "Voice not supported - please type your question"}
+              </p>
             </div>
 
             {/* Status Text */}
