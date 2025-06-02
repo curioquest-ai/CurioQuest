@@ -18,8 +18,8 @@ export default function BottomNavigation({ currentPage }: BottomNavigationProps)
   const [, setLocation] = useLocation();
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent pt-8 pb-4 safe-area-inset">
-      <div className="flex justify-around items-center px-4">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-black/90 to-black/70 backdrop-blur-sm pt-4 pb-safe">
+      <div className="flex justify-around items-center px-4 pb-2">
         {navigationItems.map((item) => {
           const isActive = item.id === currentPage;
           const IconComponent = item.icon;
