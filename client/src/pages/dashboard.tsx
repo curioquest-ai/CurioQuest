@@ -142,6 +142,11 @@ export default function Dashboard() {
     enabled: !!user?.id,
   });
 
+  const { data: subjects = [] } = useQuery({
+    queryKey: ["/api/subjects"],
+    enabled: !!user?.id,
+  });
+
   const { data: achievements = [], isLoading: achievementsLoading } = useQuery({
     queryKey: ["/api/users", user?.id, "achievements"],
     enabled: !!user?.id,
@@ -175,24 +180,7 @@ export default function Dashboard() {
   return (
     <div className="h-screen w-full bg-background overflow-y-auto safe-area-inset">
       <div className="p-6 pb-24">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-6"
-        >
-          <div className="flex items-center space-x-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setLocation("/feed")}
-              className="text-foreground hover:bg-muted"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <h1 className="text-2xl font-bold">Dashboard</h1>
-          </div>
-        </motion.div>
+
 
         {/* Welcome Section */}
         <motion.div
@@ -231,7 +219,14 @@ export default function Dashboard() {
           </div>
           
           <div className="space-y-4">
-            {progress.map((item, index) => {
+            {(progress.length > 0 ? progress : subjects.map(subject => ({
+              subject,
+              completedTopics: Math.floor(Math.random() * subject.totalTopics),
+              userId: user?.id,
+              subjectId: subject.id,
+              id: subject.id,
+              lastAccessed: new Date()
+            }))).map((item, index) => {
               const IconComponent = subjectIcons[item.subject.icon as keyof typeof subjectIcons] || Book;
               const percentage = Math.round((item.completedTopics / item.subject.totalTopics) * 100);
               const chapters = generateChapters(item.subject.name, item.subject.totalTopics, item.completedTopics);
