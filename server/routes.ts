@@ -2,10 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertQuizAttemptSchema } from "@shared/schema";
-import { AITeacherService } from "./ai-teacher";
 import { z } from "zod";
-
-const aiTeacher = new AITeacherService(storage);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // User routes
@@ -215,23 +212,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI Teacher routes
-  app.post("/api/ai-teacher/chat", async (req, res) => {
-    try {
-      const { message } = req.body;
-      const userId = req.body.userId || 1; // For now, using default user ID
-      
-      if (!message || typeof message !== 'string') {
-        return res.status(400).json({ error: "Message is required" });
-      }
 
-      const response = await aiTeacher.generateResponse(userId, message);
-      res.json({ response });
-    } catch (error) {
-      console.error("AI Teacher error:", error);
-      res.status(500).json({ error: "Failed to generate AI response" });
-    }
-  });
 
   const httpServer = createServer(app);
   return httpServer;
