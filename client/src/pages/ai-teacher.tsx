@@ -1,3 +1,4 @@
+/// <reference path="../types/speech.d.ts" />
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Settings, Lightbulb, Mic, Volume2, Repeat, FileText, User } from "lucide-react";
