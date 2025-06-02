@@ -52,8 +52,8 @@ export default function VideoFeed() {
     const timer = setInterval(() => {
       setTimeWatched(prev => prev + 1);
       
-      // Trigger quiz after 5 minutes (300 seconds) or 10 videos
-      if (timeWatched >= 300 || videosWatched >= 10) {
+      // Trigger quiz after 2 minutes (120 seconds) or 4 videos
+      if (timeWatched >= 120 || videosWatched >= 4) {
         setLocation("/quiz");
       }
     }, 1000);
@@ -196,9 +196,9 @@ export default function VideoFeed() {
     );
   }
 
-  const progressPercent = Math.min((videosWatched / 10) * 100, 100);
-  const timeUntilQuiz = Math.max(300 - timeWatched, 0);
-  const videosUntilQuiz = Math.max(10 - videosWatched, 0);
+  const progressPercent = Math.min((videosWatched / 4) * 100, 100);
+  const timeUntilQuiz = Math.max(120 - timeWatched, 0);
+  const videosUntilQuiz = Math.max(4 - videosWatched, 0);
 
   return (
     <div 
