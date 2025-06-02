@@ -101,7 +101,7 @@ export default function Profile() {
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative bg-gradient-to-r from-primary to-accent text-white p-6 pb-20"
+        className="relative bg-gradient-to-r from-primary to-accent text-white p-6 pb-16"
       >
         <div className="absolute top-4 right-4 flex space-x-2">
           <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 text-white border-white/30">
@@ -184,7 +184,7 @@ export default function Profile() {
       </motion.div>
 
       {/* Content */}
-      <div className="px-4 -mt-12 pb-24 space-y-6">
+      <div className="px-4 mt-4 pb-24 space-y-6">
         {/* Level Progress Card */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
