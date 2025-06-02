@@ -203,7 +203,7 @@ export default function VideoFeed() {
   return (
     <div 
       ref={containerRef}
-      className="h-screen w-full relative overflow-hidden touch-manipulation"
+      className="h-screen w-full relative overflow-hidden touch-manipulation bg-black"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}

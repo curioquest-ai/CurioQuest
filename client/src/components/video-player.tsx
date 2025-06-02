@@ -109,7 +109,7 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       {/* Video Element */}
       <video
         ref={videoRef}
-        className={`absolute inset-0 w-full h-full object-cover ${videoError ? 'hidden' : ''}`}
+        className={`absolute inset-0 w-full h-full object-contain ${videoError ? 'hidden' : ''}`}
         src={video.videoUrl}
         playsInline
         loop={false}
@@ -127,7 +127,7 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       <img
         src={video.thumbnailUrl}
         alt={video.title}
-        className={`absolute inset-0 w-full h-full object-cover ${videoLoaded && !videoError ? 'hidden' : ''}`}
+        className={`absolute inset-0 w-full h-full object-contain ${videoLoaded && !videoError ? 'hidden' : ''}`}
       />
       
       {/* Error indicator */}
