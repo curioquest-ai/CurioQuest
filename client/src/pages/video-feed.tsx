@@ -254,41 +254,61 @@ export default function VideoFeed() {
         animate={{ opacity: 1, scale: 1 }}
         className="fixed top-3 left-1/2 transform -translate-x-1/2 z-50"
       >
-        <div className="bg-black/90 backdrop-blur-xl rounded-full px-3 py-1.5 shadow-2xl border border-white/10">
-          <div className="flex items-center space-x-2 text-white text-xs">
-            {/* Compact Progress Dots */}
-            <div className="flex items-center space-x-0.5">
+        <div className="bg-black/90 backdrop-blur-xl rounded-full px-4 py-2 shadow-2xl border border-white/10">
+          <div className="flex items-center space-x-3 text-white text-sm">
+            {/* Progress Pills */}
+            <div className="flex items-center space-x-1">
               {Array.from({ length: 4 }, (_, i) => (
                 <motion.div
                   key={i}
-                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                    i < currentVideoIndex ? 'bg-green-400' : 
-                    i === currentVideoIndex ? 'bg-white' : 
+                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                    i < currentVideoIndex ? 'bg-green-400 shadow-sm shadow-green-400/50' : 
+                    i === currentVideoIndex ? 'bg-blue-400 shadow-sm shadow-blue-400/50' : 
                     'bg-white/20'
                   }`}
-                  animate={i === currentVideoIndex ? { scale: [1, 1.4, 1] } : {}}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+                  animate={i === currentVideoIndex ? { scale: [1, 1.3, 1] } : {}}
+                  transition={{ duration: 2, repeat: Infinity }}
                 />
               ))}
             </div>
             
-            {/* Quiz Indicator */}
-            <div className="flex items-center space-x-1">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="w-2 h-2 border border-white/40 border-t-accent rounded-full"
-              />
-              <span className="font-medium">
-                Quiz {videosUntilQuiz}
-              </span>
-            </div>
+            {/* Quiz Challenge Badge */}
+            {videosUntilQuiz > 0 ? (
+              <div className="flex items-center space-x-1.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-2 py-1 rounded-full border border-purple-400/30">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="text-yellow-400 text-sm"
+                >
+                  🎯
+                </motion.div>
+                <span className="font-semibold text-white">
+                  {videosUntilQuiz} more to unlock quiz!
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-1.5 bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-2 py-1 rounded-full border border-green-400/30">
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1, repeat: Infinity }}
+                  className="text-green-400 text-sm"
+                >
+                  🚀
+                </motion.div>
+                <span className="font-semibold text-green-300">
+                  Quiz ready!
+                </span>
+              </div>
+            )}
             
-            {/* Compact Timer */}
-            {timeUntilQuiz > 0 && timeUntilQuiz <= 60 && (
-              <span className="font-mono text-accent text-xs">
-                {timeUntilQuiz}s
-              </span>
+            {/* Timer Display */}
+            {timeUntilQuiz > 0 && timeUntilQuiz <= 30 && (
+              <div className="flex items-center space-x-1 bg-orange-500/20 px-2 py-1 rounded-full border border-orange-400/30">
+                <span className="text-orange-400 text-xs">⏰</span>
+                <span className="font-mono text-orange-300 text-xs font-bold">
+                  {timeUntilQuiz}s
+                </span>
+              </div>
             )}
           </div>
         </div>
