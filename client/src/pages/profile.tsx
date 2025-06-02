@@ -62,6 +62,11 @@ export default function Profile() {
     enabled: !!user
   });
 
+  const { data: quizStats } = useQuery({
+    queryKey: ["/api/users", user?.id, "quiz-stats"],
+    enabled: !!user?.id,
+  });
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center">
@@ -307,9 +312,13 @@ export default function Profile() {
                 </div>
 
                 <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg">
-                  <Clock className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-green-600">{Math.floor(totalVideosWatched * 2.5)}</p>
-                  <p className="text-sm text-green-600/70">Hours Learned</p>
+                  <Medal className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-green-600">
+                    {quizStats && quizStats.totalAttempts > 0 
+                      ? Math.round((quizStats.correctAnswers / quizStats.totalAttempts) * 100)
+                      : 0}%
+                  </p>
+                  <p className="text-sm text-green-600/70">Quiz Accuracy</p>
                 </div>
               </div>
             </CardContent>
