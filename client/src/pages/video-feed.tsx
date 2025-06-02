@@ -229,6 +229,20 @@ export default function VideoFeed() {
         className="absolute inset-0"
       />
 
+      {/* Click areas for navigation on non-mobile devices */}
+      <div className="absolute inset-0 z-10 hidden md:block pointer-events-none">
+        {/* Previous video area (left half) */}
+        <div 
+          className="absolute left-0 top-0 w-1/2 h-full pointer-events-auto cursor-pointer"
+          onClick={previousVideo}
+        />
+        {/* Next video area (right half) */}
+        <div 
+          className="absolute right-0 top-0 w-1/2 h-full pointer-events-auto cursor-pointer"
+          onClick={nextVideo}
+        />
+      </div>
+
 
 
       {/* Video overlay gradient */}
@@ -250,30 +264,7 @@ export default function VideoFeed() {
         </div>
       </div>
 
-      {/* Navigation Arrows */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={previousVideo}
-          disabled={currentVideoIndex === 0}
-          className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30 disabled:opacity-30"
-        >
-          <div className="w-0 h-0 border-r-[12px] border-r-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
-        </Button>
-      </div>
 
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={nextVideo}
-          disabled={currentVideoIndex === videos.length - 1}
-          className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30 disabled:opacity-30"
-        >
-          <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
-        </Button>
-      </div>
 
       {/* Side Action Buttons */}
       <div className="absolute right-4 bottom-32 flex flex-col space-y-6 z-20">
