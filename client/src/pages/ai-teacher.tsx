@@ -67,42 +67,53 @@ export default function AITeacher() {
 
       {/* Main Content Area */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 pb-32 pt-8">
-        {/* Teacher Avatar */}
-        {showVisualContent && (
+        {/* ElevenLabs Conversational AI Widget - Main Interface */}
+        <div className="w-full max-w-4xl mx-auto relative z-50">
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
+            initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 bg-white/20 rounded-full flex items-center justify-center mb-8 backdrop-blur-sm"
+            transition={{ duration: 0.6 }}
+            className="min-h-[600px] bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center justify-center"
           >
-            <User className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-white" />
+            {/* Teacher Avatar - Smaller version above widget */}
+            {showVisualContent && (
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
+                <User className="w-10 h-10 text-white" />
+              </div>
+            )}
+            
+            {/* Widget Title */}
+            <div className="text-center mb-6">
+              <h2 className="text-white text-xl sm:text-2xl font-bold mb-2">
+                Ms. Priya Sharma
+              </h2>
+              <p className="text-white/80 text-sm">
+                Your AI Teaching Assistant
+              </p>
+            </div>
+
+            {/* ElevenLabs Widget */}
+            <div className="w-full bg-white rounded-xl overflow-hidden shadow-2xl">
+              <iframe
+                src="https://elevenlabs.io/convai-widget/agent_01jwrh5g9pergrk651t512kmjg"
+                width="100%"
+                height="450"
+                style={{
+                  border: 'none',
+                  backgroundColor: 'white'
+                }}
+                allow="microphone; camera"
+                title="ElevenLabs Conversational AI - Ms. Priya Sharma"
+              />
+            </div>
+            
+            {/* Instructions */}
+            <div className="mt-6 text-center">
+              <p className="text-white/70 text-sm max-w-md mx-auto">
+                Start your conversation with Ms. Priya Sharma. She maintains context throughout your learning session.
+              </p>
+            </div>
           </motion.div>
-        )}
-
-        {/* Welcome Message */}
-        <div className="text-center mb-8 max-w-2xl">
-          <h2 className="text-white text-xl sm:text-2xl md:text-3xl font-bold mb-4">
-            Welcome to AI Teacher
-          </h2>
-          <p className="text-white/90 text-sm sm:text-base md:text-lg leading-relaxed">
-            Meet Ms. Priya Sharma, your AI teaching assistant. She's here to help you learn and understand any subject with her assertive yet caring teaching style.
-          </p>
-        </div>
-
-        {/* ElevenLabs Conversational AI Widget */}
-        <div className="w-full max-w-4xl mx-auto relative z-50 min-h-[500px] bg-white/10 backdrop-blur-sm rounded-lg p-6 flex items-center justify-center">
-          <iframe
-            src="https://elevenlabs.io/convai-widget/agent_01jwrh5g9pergrk651t512kmjg"
-            width="100%"
-            height="400"
-            style={{
-              border: 'none',
-              borderRadius: '8px',
-              backgroundColor: 'white'
-            }}
-            allow="microphone; camera"
-            title="ElevenLabs Conversational AI"
-          />
         </div>
 
         {/* Transcript Section */}
