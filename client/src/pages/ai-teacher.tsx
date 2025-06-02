@@ -85,13 +85,13 @@ export default function AITeacher() {
       </div>
 
       {/* Main Content Area */}
-      <div className="h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 pt-20 pb-32">
+      <div className="absolute inset-0 flex items-center justify-center pt-20 pb-24">
         {widgetLoaded ? (
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-sm mx-auto"
+            className="flex items-center justify-center"
           >
             <elevenlabs-convai 
               agent-id="agent_01jwrh5g9pergrk651t512kmjg"
