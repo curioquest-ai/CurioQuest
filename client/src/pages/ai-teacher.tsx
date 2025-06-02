@@ -11,11 +11,10 @@ export default function AITeacher() {
   const [aiState, setAiState] = useState<AIState>("idle");
   const [transcript, setTranscript] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
-  const [currentLesson, setCurrentLesson] = useState("Quadratic Equations");
+  const [teacherGender, setTeacherGender] = useState<"male" | "female">("female");
   const [aiResponse, setAiResponse] = useState("");
   const [userInput, setUserInput] = useState("");
   const [showVisualContent, setShowVisualContent] = useState(true);
-  const [voiceHint, setVoiceHint] = useState("Say 'Help me understand' to get started");
 
   // Voice interaction functions
   const startVoiceInteraction = () => {
@@ -91,9 +90,14 @@ export default function AITeacher() {
                     {showTranscript ? "Hide Transcript" : "Show Transcript"}
                   </span>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer">
+                <DropdownMenuItem 
+                  onClick={() => setTeacherGender(teacherGender === "female" ? "male" : "female")}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
+                >
                   <User className="w-4 h-4" />
-                  <span className="text-sm">Change Teacher</span>
+                  <span className="text-sm">
+                    Teacher: {teacherGender === "female" ? "Madam" : "Sir"}
+                  </span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -103,21 +107,6 @@ export default function AITeacher() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-center h-full px-3 sm:px-6 pt-16 sm:pt-20 pb-24 sm:pb-32">
-        {/* AI State Status */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-4 sm:mb-6"
-        >
-          <h2 className="text-white text-lg sm:text-xl md:text-2xl font-medium text-center mb-1 sm:mb-2">
-            {aiState === "listening" ? "Listening..." : 
-             aiState === "processing" ? "Processing..." : 
-             aiState === "speaking" ? "AI Teacher" : "Ready to help"}
-          </h2>
-          <p className="text-white/80 text-xs sm:text-sm md:text-base text-center">
-            {voiceHint}
-          </p>
-        </motion.div>
 
         {/* Animated AI Avatar */}
         <motion.div
@@ -188,14 +177,10 @@ export default function AITeacher() {
         {/* Content Display Card */}
         <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 px-2">
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl min-h-[120px] flex flex-col justify-center">
-            <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-4 text-center">
-              {currentLesson}
-            </h3>
-            
             {/* Content based on state */}
             {aiState === "idle" && !userInput && !aiResponse && (
               <p className="text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed text-center italic">
-                Tap the microphone and say "Help me understand" to get started
+                Say "{teacherGender === "female" ? "Madam" : "Sir"}" to get started
               </p>
             )}
             
