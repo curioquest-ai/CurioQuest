@@ -4,14 +4,13 @@ import { Home, Trophy, PieChart, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface BottomNavigationProps {
-  currentPage: "feed" | "leaderboard" | "dashboard" | "profile";
+  currentPage: "feed" | "leaderboard" | "dashboard";
 }
 
 const navigationItems = [
   { id: "feed", label: "Home", icon: Home, path: "/feed" },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy, path: "/leaderboard" },
   { id: "dashboard", label: "Progress", icon: PieChart, path: "/dashboard" },
-  { id: "profile", label: "Profile", icon: User, path: "/profile" },
 ];
 
 export default function BottomNavigation({ currentPage }: BottomNavigationProps) {

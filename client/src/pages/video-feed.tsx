@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { getUserInitials } from "@/lib/auth";
 import VideoPlayer from "@/components/video-player";
 import StreakIndicator from "@/components/streak-indicator";
 import BottomNavigation from "@/components/bottom-navigation";
@@ -247,6 +248,21 @@ export default function VideoFeed() {
 
       {/* Video overlay gradient */}
       <div className="absolute inset-0 video-overlay pointer-events-none" />
+
+      {/* Profile Icon - Top Right */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="fixed top-4 right-4 z-50"
+      >
+        <Button
+          onClick={() => setLocation("/profile")}
+          className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-lg border-2 border-white/20"
+          size="icon"
+        >
+          {user?.name ? getUserInitials(user.name) : "U"}
+        </Button>
+      </motion.div>
 
       {/* Dynamic Island Progress Indicator */}
       <motion.div 

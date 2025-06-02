@@ -418,7 +418,7 @@ export default function Profile() {
         </motion.div>
       </div>
 
-      <BottomNavigation currentPage="profile" />
+
     </div>
   );
 }
