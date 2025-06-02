@@ -1,13 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Settings, FileText, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import BottomNavigation from "@/components/bottom-navigation";
+import { useAuthContext } from "@/lib/auth.tsx";
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'elevenlabs-convai': {
+        'agent-id': string;
+        'override-agent-config'?: string;
+        children?: React.ReactNode;
+      };
+    }
+  }
+}
 
 export default function AITeacher() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [showVisualContent, setShowVisualContent] = useState(true);
+  const [widgetLoaded, setWidgetLoaded] = useState(false);
+  const { user } = useAuthContext();
+  const widgetRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Load ElevenLabs widget script
+    const script = document.createElement('script');
+    script.src = 'https://elevenlabs.io/convai-widget/index.js';
+    script.async = true;
+    script.onload = () => {
+      setWidgetLoaded(true);
+    };
+    script.onerror = () => {
+      console.error('Failed to load ElevenLabs widget');
+    };
+    
+    document.head.appendChild(script);
+    
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
+  const agentConfig = {
+    prompt: {
+      prompt: `You are Ms. Priya Sharma, an experienced Indian female school teacher. The student's name is ${user?.name || 'Student'} and they are in grade ${user?.grade || 'unknown'}. Start by greeting them warmly using their name and asking what subject they'd like help with today. Use an assertive but caring teaching style typical of Indian educators.`
+    },
+    first_message: `Hello ${user?.name || 'Student'}! Welcome to your learning session. I'm Ms. Priya Sharma, your teacher. ${user?.grade ? `Since you're in grade ${user.grade}, ` : ''}I'm here to help you with any subject you're studying. What would you like to learn about today?`
+  };
 
   return (
     <div className="h-screen w-full relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600">
