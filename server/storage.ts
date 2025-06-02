@@ -112,39 +112,51 @@ export class MemStorage implements IStorage {
     const videosData: Video[] = [
       {
         id: 1,
-        title: "Understanding Molecular Structures",
-        description: "Learn how atoms bond together to form compounds! 🧪✨",
+        title: "Chemistry Class: Molecular Bonding",
+        description: "Interactive chemistry lesson on how molecules form bonds! 🧪",
         subjectId: 1,
         thumbnailUrl: "https://images.unsplash.com/photo-1532634893-8e5c6f9acc41?w=400",
-        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        videoUrl: "/videos/snaptik_7306535208885423393.mp4",
         duration: 180,
-        createdBy: "@SciencePro",
-        likes: 245,
-        views: 1250
+        createdBy: "@ChemTeacher",
+        likes: 342,
+        views: 1850
       },
       {
         id: 2,
-        title: "Algebra Fundamentals",
-        description: "Master the basics of algebraic equations step by step! 📐",
+        title: "Math Made Easy: Quick Tips",
+        description: "Master math concepts with this engaging lesson! 📐",
         subjectId: 2,
         thumbnailUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400",
-        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        videoUrl: "/videos/snaptik_7446718113065798919.mp4",
         duration: 240,
-        createdBy: "@MathMaster",
-        likes: 189,
-        views: 980
+        createdBy: "@MathGuru",
+        likes: 528,
+        views: 2340
       },
       {
         id: 3,
-        title: "Shakespeare's Sonnets",
-        description: "Explore the beauty of Shakespearean poetry and its impact! 📚",
+        title: "English Literature: Creative Writing",
+        description: "Learn creative writing techniques from expert teachers! 📚",
         subjectId: 3,
         thumbnailUrl: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400",
-        videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        duration: 300,
-        createdBy: "@LitLover",
-        likes: 156,
-        views: 750
+        videoUrl: "/videos/Lip Sync__OK CLASS. Today...._Rachel_Gen-4 Turbo Viral..._2025-05-30.mp4",
+        duration: 195,
+        createdBy: "@EnglishPro",
+        likes: 412,
+        views: 1920
+      },
+      {
+        id: 4,
+        title: "Science Fundamentals",
+        description: "Essential science concepts explained in an engaging way! 🔬",
+        subjectId: 4,
+        thumbnailUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+        videoUrl: "/videos/Download.mp4",
+        duration: 210,
+        createdBy: "@ScienceTeacher",
+        likes: 367,
+        views: 1650
       }
     ];
     
