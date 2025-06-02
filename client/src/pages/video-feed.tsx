@@ -253,11 +253,11 @@ export default function VideoFeed() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed top-4 right-4 z-50"
+        className="fixed top-3 sm:top-4 right-3 sm:right-4 z-50"
       >
         <Button
           onClick={() => setLocation("/profile")}
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-lg border-2 border-white/20"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold shadow-lg border-2 border-white/20 text-xs sm:text-sm"
           size="icon"
         >
           {user?.name ? getUserInitials(user.name) : "U"}
@@ -268,16 +268,16 @@ export default function VideoFeed() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed top-3 left-1/2 transform -translate-x-1/2 z-50"
+        className="fixed top-3 left-1/2 transform -translate-x-1/2 z-50 max-w-[90vw] sm:max-w-none"
       >
-        <div className="bg-black/90 backdrop-blur-xl rounded-full px-4 py-2 shadow-2xl border border-white/10">
-          <div className="flex items-center space-x-3 text-white text-sm">
+        <div className="bg-black/90 backdrop-blur-xl rounded-full px-3 sm:px-4 py-2 shadow-2xl border border-white/10">
+          <div className="flex items-center space-x-2 sm:space-x-3 text-white text-xs sm:text-sm">
             {/* Progress Pills */}
             <div className="flex items-center space-x-1">
               {Array.from({ length: 4 }, (_, i) => (
                 <motion.div
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                  className={`w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full transition-all duration-500 ${
                     i < currentVideoIndex ? 'bg-green-400 shadow-sm shadow-green-400/50' : 
                     i === currentVideoIndex ? 'bg-blue-400 shadow-sm shadow-blue-400/50' : 
                     'bg-white/20'
@@ -290,28 +290,28 @@ export default function VideoFeed() {
             
             {/* Quiz Challenge Badge */}
             {videosUntilQuiz > 0 ? (
-              <div className="flex items-center space-x-1.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-2 py-1 rounded-full border border-purple-400/30">
+              <div className="flex items-center space-x-1 sm:space-x-1.5 bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-2 py-1 rounded-full border border-purple-400/30">
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="text-yellow-400 text-sm"
+                  className="text-yellow-400 text-xs sm:text-sm"
                 >
                   🎯
                 </motion.div>
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-white whitespace-nowrap">
                   {videosUntilQuiz} more to unlock quiz!
                 </span>
               </div>
             ) : (
-              <div className="flex items-center space-x-1.5 bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-2 py-1 rounded-full border border-green-400/30">
+              <div className="flex items-center space-x-1 sm:space-x-1.5 bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-2 py-1 rounded-full border border-green-400/30">
                 <motion.div
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1, repeat: Infinity }}
-                  className="text-green-400 text-sm"
+                  className="text-green-400 text-xs sm:text-sm"
                 >
                   🚀
                 </motion.div>
-                <span className="font-semibold text-green-300">
+                <span className="font-semibold text-green-300 whitespace-nowrap">
                   Quiz ready!
                 </span>
               </div>
@@ -335,7 +335,7 @@ export default function VideoFeed() {
 
 
       {/* Side Action Buttons */}
-      <div className="absolute right-4 bottom-32 flex flex-col space-y-6 z-20">
+      <div className="absolute right-2 sm:right-4 bottom-24 sm:bottom-32 flex flex-col space-y-4 sm:space-y-6 z-20">
         <motion.div
           whileTap={{ scale: 0.9 }}
           className="text-center"
@@ -343,9 +343,9 @@ export default function VideoFeed() {
           <Button
             variant="ghost"
             size="icon"
-            className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30"
+            className="w-10 h-10 sm:w-12 sm:h-12 glass-dark rounded-full text-white hover:bg-white/30"
           >
-            <Heart className="w-6 h-6" />
+            <Heart className="w-4 h-4 sm:w-6 sm:h-6" />
           </Button>
           <span className="text-xs mt-1 block text-white">{currentVideo.likes}</span>
         </motion.div>
@@ -358,9 +358,9 @@ export default function VideoFeed() {
             variant="ghost"
             size="icon"
             onClick={handleShare}
-            className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30"
+            className="w-10 h-10 sm:w-12 sm:h-12 glass-dark rounded-full text-white hover:bg-white/30"
           >
-            <Share className="w-6 h-6" />
+            <Share className="w-4 h-4 sm:w-6 sm:h-6" />
           </Button>
           <span className="text-xs mt-1 block text-white">Share</span>
         </motion.div>
@@ -371,32 +371,30 @@ export default function VideoFeed() {
           <Button
             variant="ghost"
             size="icon"
-            className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30"
+            className="w-10 h-10 sm:w-12 sm:h-12 glass-dark rounded-full text-white hover:bg-white/30"
           >
-            <Bookmark className="w-6 h-6" />
+            <Bookmark className="w-4 h-4 sm:w-6 sm:h-6" />
           </Button>
         </motion.div>
       </div>
 
       {/* Video Info */}
-      <div className="absolute bottom-20 left-4 right-20 z-20">
-        <div className="flex items-center space-x-3 mb-3">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-sm font-bold text-white">
+      <div className="absolute bottom-16 sm:bottom-20 left-2 sm:left-4 right-16 sm:right-20 z-20">
+        <div className="flex items-center space-x-2 sm:space-x-3 mb-2 sm:mb-3">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center">
+            <span className="text-xs sm:text-sm font-bold text-white">
               {currentVideo.subjectId === 1 ? "🧪" : 
                currentVideo.subjectId === 2 ? "📐" : 
                currentVideo.subjectId === 3 ? "📚" : "🔬"}
             </span>
           </div>
-          <div>
-            <h3 className="font-semibold text-white">{currentVideo.title}</h3>
-            <p className="text-sm text-white/80">{currentVideo.createdBy}</p>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-white text-sm sm:text-base truncate">{currentVideo.title}</h3>
+            <p className="text-xs sm:text-sm text-white/80 truncate">{currentVideo.createdBy}</p>
           </div>
         </div>
         
-        <p className="text-sm mb-3 text-white">{currentVideo.description}</p>
-        
-
+        <p className="text-xs sm:text-sm mb-2 sm:mb-3 text-white line-clamp-2">{currentVideo.description}</p>
       </div>
 
       {/* Video progress bar */}
