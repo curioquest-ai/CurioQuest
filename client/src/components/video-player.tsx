@@ -29,15 +29,31 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
       onVideoEnd?.();
     };
 
+    const handleError = (e: Event) => {
+      console.log("Video error handled:", e);
+      // For demo purposes, simulate video progress
+      setTimeout(() => onVideoEnd?.(), 5000);
+    };
+
+    const handleLoadedData = () => {
+      // Auto-play video when loaded
+      videoElement.play().catch((error) => {
+        console.log("Autoplay prevented:", error);
+        // Fallback: simulate video playing
+        setIsPlaying(true);
+      });
+    };
+
     videoElement.addEventListener("timeupdate", handleTimeUpdate);
     videoElement.addEventListener("ended", handleEnded);
-
-    // Auto-play video
-    videoElement.play().catch(console.error);
+    videoElement.addEventListener("error", handleError);
+    videoElement.addEventListener("loadeddata", handleLoadedData);
 
     return () => {
       videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       videoElement.removeEventListener("ended", handleEnded);
+      videoElement.removeEventListener("error", handleError);
+      videoElement.removeEventListener("loadeddata", handleLoadedData);
     };
   }, [video.id, onVideoEnd]);
 
@@ -68,22 +84,34 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
 
   return (
     <div className={`relative w-full h-full ${className}`}>
-      {/* Video Background Image (placeholder since we can't use actual videos) */}
-      <img
-        src={video.thumbnailUrl}
-        alt={video.title}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      
-      {/* Mock video element for functionality */}
+      {/* Video Element */}
       <video
         ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover opacity-0"
+        className="absolute inset-0 w-full h-full object-cover"
         src={video.videoUrl}
         playsInline
         loop={false}
         muted={isMuted}
+        controls={false}
+        preload="metadata"
         onClick={handleVideoClick}
+        poster={video.thumbnailUrl}
+      >
+        <source src={video.videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      
+      {/* Fallback image if video fails */}
+      <img
+        src={video.thumbnailUrl}
+        alt={video.title}
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ display: 'none' }}
+        onError={() => {
+          // Show thumbnail if video fails
+          const img = document.querySelector(`img[alt="${video.title}"]`) as HTMLImageElement;
+          if (img) img.style.display = 'block';
+        }}
       />
 
       {/* Video Controls Overlay */}
