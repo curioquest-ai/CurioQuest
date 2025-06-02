@@ -176,11 +176,14 @@ export default function AITeacher() {
 
         {/* Content Display Card */}
         <div className="w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 px-2">
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl min-h-[120px] flex flex-col justify-center">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl flex flex-col justify-center"
+               style={{
+                 minHeight: aiState === "idle" && !userInput && !aiResponse ? "80px" : "auto"
+               }}>
             {/* Content based on state */}
             {aiState === "idle" && !userInput && !aiResponse && (
               <p className="text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed text-center italic">
-                Say "{teacherGender === "female" ? "Madam" : "Sir"}" to get started
+                Say "Excuse me {teacherGender === "female" ? "Madam" : "Sir"}" to get started
               </p>
             )}
             
