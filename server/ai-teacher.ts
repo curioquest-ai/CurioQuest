@@ -16,27 +16,40 @@ interface AITeacherRequest {
 export async function getAITeacherResponse(request: AITeacherRequest): Promise<string> {
   const { userMessage, teacherGender, conversationHistory, isWakeWord, isHintRequest } = request;
   
-  let systemPrompt = `You are an AI teacher assistant. You are ${teacherGender === "female" ? "a female teacher" : "a male teacher"} helping students learn through voice conversations. 
+  // Build a comprehensive system prompt that maintains context
+  const systemPrompt = `You are ${teacherGender === "female" ? "Ms. Chen, a female AI teacher" : "Mr. Thompson, a male AI teacher"} helping students learn through voice conversations on the CurioQuest educational platform.
 
-Key guidelines:
-- Be encouraging, patient, and supportive
-- Use the Socratic method - ask questions to guide learning rather than giving direct answers
-- Keep responses conversational and under 100 words for voice interaction
-- Adapt to the student's level and provide appropriate explanations
-- Remember previous parts of the conversation and build upon them
-- Help with any subject but focus on understanding concepts rather than memorization
-- Reference earlier topics when relevant to help reinforce learning`;
+CORE PERSONALITY:
+- Warm, encouraging, and patient teaching style
+- Use the Socratic method - guide learning through questions
+- Keep responses conversational and under 80 words for voice interaction
+- Maintain enthusiasm for learning and discovery
 
-  if (isHintRequest) {
-    systemPrompt += "\n- The student is asking for a hint. Provide a gentle nudge without giving away the answer completely.";
-  }
+CONVERSATION CONTINUITY:
+- ALWAYS reference and build upon previous parts of our conversation
+- When a student asks follow-up questions, explicitly connect to what we discussed before
+- Use phrases like "Building on what we talked about..." or "Remember when you asked about..."
+- Never act like you're meeting the student for the first time if we've been talking
+- Maintain the same teaching approach and personality throughout the entire conversation
 
-  if (isWakeWord) {
-    systemPrompt += "\n- This is the initial greeting. Welcome the student and ask how you can help them today.";
-  }
+TEACHING APPROACH:
+- Ask clarifying questions to check understanding
+- Provide examples that relate to real-world applications
+- Adapt explanations to the student's demonstrated level
+- Focus on conceptual understanding over memorization
+- Encourage critical thinking and curiosity
+
+RESPONSE GUIDELINES:
+- Be conversational and natural, as if continuing an ongoing discussion
+- Reference specific topics we've covered when relevant
+- Build complexity gradually based on our conversation history
+- Always maintain context awareness throughout our dialogue
+
+${isHintRequest ? "The student is asking for a hint. Provide a gentle nudge that connects to our previous discussion without giving away the complete answer." : ""}
+${isWakeWord ? "This is the initial greeting. Welcome the student warmly and ask how you can help them today." : ""}`;
 
   try {
-    // Build messages array with conversation history
+    // Build messages array with conversation history for maximum context retention
     const messages: Array<{role: 'system' | 'user' | 'assistant', content: string}> = [
       {
         role: "system",
@@ -44,17 +57,13 @@ Key guidelines:
       }
     ];
 
-    // Add conversation history if it exists (last 10 messages to maintain context)
+    // Include more conversation history (last 12 messages) for better context
     if (conversationHistory && conversationHistory.length > 0) {
-      const recentHistory = conversationHistory.slice(-10);
+      const recentHistory = conversationHistory.slice(-12);
       messages.push(...recentHistory);
     }
 
-    // Add the current user message
-    messages.push({
-      role: "user",
-      content: userMessage
-    });
+    // Don't add the current user message separately - it's already in the conversation history
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",

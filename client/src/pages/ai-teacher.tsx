@@ -74,10 +74,10 @@ export default function AITeacher() {
   // Handle user speech input
   const handleUserSpeech = async (speechText: string) => {
     setAiState("processing");
+    setUserInput(speechText);
     
     // Add user message to conversation history
     const newConversationHistory = [...conversationHistory, { role: 'user' as const, content: speechText }];
-    setConversationHistory(newConversationHistory);
     
     try {
       // Call OpenAI API for response with conversation context
@@ -100,10 +100,9 @@ export default function AITeacher() {
       
       const data = await response.json();
       
-      // Add AI response to conversation history
+      // Add AI response to conversation history and update state
       const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: data.response }];
       setConversationHistory(updatedHistory);
-      
       setAiResponse(data.response);
       speakResponse(data.response);
     } catch (error) {
@@ -123,7 +122,6 @@ export default function AITeacher() {
       // Add fallback response to conversation history
       const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: fallbackResponse }];
       setConversationHistory(updatedHistory);
-      
       setAiResponse(fallbackResponse);
       speakResponse(fallbackResponse);
     }
