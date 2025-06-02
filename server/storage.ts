@@ -108,6 +108,135 @@ export class MemStorage implements IStorage {
       this.currentSubjectId = Math.max(this.currentSubjectId, subject.id + 1);
     });
 
+    // Initialize sample users for leaderboard
+    const sampleUsers: User[] = [
+      {
+        id: 2,
+        name: "Emma Chen",
+        grade: 10,
+        school: "Lincoln High School",
+        totalScore: 2850,
+        currentStreak: 15,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 3,
+        name: "Marcus Johnson",
+        grade: 11,
+        school: "Central Academy",
+        totalScore: 2720,
+        currentStreak: 12,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 4,
+        name: "Sofia Rodriguez",
+        grade: 9,
+        school: "Riverside High",
+        totalScore: 2610,
+        currentStreak: 18,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 5,
+        name: "James Liu",
+        grade: 10,
+        school: "Tech Valley High",
+        totalScore: 2480,
+        currentStreak: 8,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 6,
+        name: "Aisha Patel",
+        grade: 11,
+        school: "Innovation Academy",
+        totalScore: 2390,
+        currentStreak: 22,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 7,
+        name: "Alex Thompson",
+        grade: 9,
+        school: "Metro High School",
+        totalScore: 2275,
+        currentStreak: 6,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 8,
+        name: "Maya Singh",
+        grade: 10,
+        school: "Eastside Academy",
+        totalScore: 2150,
+        currentStreak: 14,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 9,
+        name: "David Kim",
+        grade: 11,
+        school: "Pioneer High",
+        totalScore: 2040,
+        currentStreak: 9,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 10,
+        name: "Isabella Garcia",
+        grade: 9,
+        school: "Summit Academy",
+        totalScore: 1920,
+        currentStreak: 11,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 11,
+        name: "Ryan Williams",
+        grade: 10,
+        school: "Northside High",
+        totalScore: 1850,
+        currentStreak: 4,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 12,
+        name: "Zoe Anderson",
+        grade: 11,
+        school: "Valley High School",
+        totalScore: 1730,
+        currentStreak: 16,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
+      },
+      {
+        id: 13,
+        name: "Carlos Martinez",
+        grade: 9,
+        school: "Westfield Academy",
+        totalScore: 1640,
+        currentStreak: 7,
+        lastActiveDate: new Date().toISOString(),
+        createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      }
+    ];
+
+    sampleUsers.forEach(user => {
+      this.users.set(user.id, user);
+      this.currentUserId = Math.max(this.currentUserId, user.id + 1);
+    });
+
     // Initialize videos
     const videosData: Video[] = [
       {
