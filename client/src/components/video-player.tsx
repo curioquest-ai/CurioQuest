@@ -127,14 +127,6 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
         />
       </div>
 
-      {/* Video Info Overlay */}
-      <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-1">
-        <div className="flex items-center space-x-2 text-white text-sm">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          <span>LIVE</span>
-        </div>
-      </div>
-
       {/* Views Counter */}
       <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg px-3 py-1">
         <span className="text-white text-sm">{video.views.toLocaleString()} views</span>

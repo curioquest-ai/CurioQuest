@@ -229,9 +229,6 @@ export default function VideoFeed() {
         <StreakIndicator streak={user?.currentStreak || 0} />
         
         <div className="flex items-center space-x-4">
-          <div className="glass-dark rounded-full px-3 py-1">
-            <span className="text-xs text-white">Score: {user?.totalScore || 0}</span>
-          </div>
           <Button
             variant="ghost"
             size="icon"
