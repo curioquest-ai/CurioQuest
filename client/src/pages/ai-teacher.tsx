@@ -69,19 +69,7 @@ export default function AITeacher() {
     <div className="h-screen w-full relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-50 p-4 sm:p-6">
-        <div className="flex items-center justify-between">
-          {/* Progress Bar */}
-          <div className="flex-1 mr-4 sm:mr-6">
-            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"
-                initial={{ width: "0%" }}
-                animate={{ width: "75%" }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              />
-            </div>
-          </div>
-
+        <div className="flex items-center justify-end">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Button
               variant="ghost"
