@@ -81,6 +81,11 @@ export default function VideoFeed() {
     touchStartTime.current = Date.now();
   };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    // Prevent default scroll behavior during swipe
+    e.preventDefault();
+  };
+
   const handleTouchEnd = (e: React.TouchEvent) => {
     const touchEndY = e.changedTouches[0].clientY;
     const touchEndTime = Date.now();
@@ -88,10 +93,12 @@ export default function VideoFeed() {
     const timeDiff = touchEndTime - touchStartTime.current;
 
     // Only register swipe if it's fast enough and long enough
-    if (Math.abs(diffY) > 50 && timeDiff < 300) {
+    if (Math.abs(diffY) > 30 && timeDiff < 500) {
       if (diffY > 0) {
+        // Swipe up - next video
         nextVideo();
       } else {
+        // Swipe down - previous video
         previousVideo();
       }
     }
@@ -198,6 +205,7 @@ export default function VideoFeed() {
       ref={containerRef}
       className="h-screen w-full relative overflow-hidden touch-manipulation"
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* Swipe indicators */}
@@ -221,6 +229,34 @@ export default function VideoFeed() {
         className="absolute inset-0"
       />
 
+      {/* Click zones for navigation */}
+      <div className="absolute inset-0 flex flex-col z-10 pointer-events-none">
+        {/* Previous video zone (top half) */}
+        <div 
+          className="w-full h-1/2 pointer-events-auto cursor-pointer flex items-center justify-center group"
+          onClick={(e) => {
+            e.stopPropagation();
+            previousVideo();
+          }}
+        >
+          <div className="opacity-0 group-active:opacity-50 bg-white/20 rounded-full p-3 transition-opacity">
+            <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent rotate-90"></div>
+          </div>
+        </div>
+        {/* Next video zone (bottom half) */}
+        <div 
+          className="w-full h-1/2 pointer-events-auto cursor-pointer flex items-center justify-center group"
+          onClick={(e) => {
+            e.stopPropagation();
+            nextVideo();
+          }}
+        >
+          <div className="opacity-0 group-active:opacity-50 bg-white/20 rounded-full p-3 transition-opacity">
+            <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent -rotate-90"></div>
+          </div>
+        </div>
+      </div>
+
       {/* Video overlay gradient */}
       <div className="absolute inset-0 video-overlay pointer-events-none" />
 
@@ -238,6 +274,31 @@ export default function VideoFeed() {
             <ChartLine className="w-5 h-5" />
           </Button>
         </div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={previousVideo}
+          disabled={currentVideoIndex === 0}
+          className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30 disabled:opacity-30"
+        >
+          <div className="w-0 h-0 border-r-[12px] border-r-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
+        </Button>
+      </div>
+
+      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={nextVideo}
+          disabled={currentVideoIndex === videos.length - 1}
+          className="w-12 h-12 glass-dark rounded-full text-white hover:bg-white/30 disabled:opacity-30"
+        >
+          <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent"></div>
+        </Button>
       </div>
 
       {/* Side Action Buttons */}
