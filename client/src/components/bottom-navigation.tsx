@@ -1,16 +1,17 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Home, Trophy, PieChart, User } from "lucide-react";
+import { Home, Trophy, PieChart, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface BottomNavigationProps {
-  currentPage: "feed" | "leaderboard" | "dashboard";
+  currentPage: "feed" | "leaderboard" | "dashboard" | "ai-teacher";
 }
 
 const navigationItems = [
   { id: "feed", label: "Home", icon: Home, path: "/feed" },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy, path: "/leaderboard" },
   { id: "dashboard", label: "Progress", icon: PieChart, path: "/dashboard" },
+  { id: "ai-teacher", label: "AI Teacher", icon: MessageCircle, path: "/ai-teacher" },
 ];
 
 export default function BottomNavigation({ currentPage }: BottomNavigationProps) {
