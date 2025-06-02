@@ -18,6 +18,7 @@ export default function AITeacher() {
   const [showVisualContent, setShowVisualContent] = useState(true);
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const synthesisRef = useRef<SpeechSynthesis | null>(null);
@@ -74,8 +75,12 @@ export default function AITeacher() {
   const handleUserSpeech = async (speechText: string) => {
     setAiState("processing");
     
+    // Add user message to conversation history
+    const newConversationHistory = [...conversationHistory, { role: 'user' as const, content: speechText }];
+    setConversationHistory(newConversationHistory);
+    
     try {
-      // Call OpenAI API for response
+      // Call OpenAI API for response with conversation context
       const response = await fetch('/api/ai-teacher', {
         method: 'POST',
         headers: {
@@ -84,6 +89,7 @@ export default function AITeacher() {
         body: JSON.stringify({
           userMessage: speechText,
           teacherGender,
+          conversationHistory: newConversationHistory,
           isWakeWord: false
         }),
       });
@@ -93,6 +99,11 @@ export default function AITeacher() {
       }
       
       const data = await response.json();
+      
+      // Add AI response to conversation history
+      const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: data.response }];
+      setConversationHistory(updatedHistory);
+      
       setAiResponse(data.response);
       speakResponse(data.response);
     } catch (error) {
@@ -108,6 +119,11 @@ export default function AITeacher() {
       ];
       
       const fallbackResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      
+      // Add fallback response to conversation history
+      const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: fallbackResponse }];
+      setConversationHistory(updatedHistory);
+      
       setAiResponse(fallbackResponse);
       speakResponse(fallbackResponse);
     }
@@ -358,23 +374,28 @@ export default function AITeacher() {
               </div>
             )}
             
-            {(aiState === "speaking" || aiState === "idle") && userInput && aiResponse && (
-              <div className="space-y-3">
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <p className="text-blue-700 text-xs sm:text-sm font-medium">You said:</p>
-                  <p className="text-gray-700 text-xs sm:text-sm">{userInput}</p>
-                </div>
-                <div className="bg-green-50 rounded-lg p-3">
-                  <p className="text-green-700 text-xs sm:text-sm font-medium">AI Teacher:</p>
-                  <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{aiResponse}</p>
-                </div>
-              </div>
-            )}
-            
-            {(aiState === "speaking" || aiState === "idle") && !userInput && aiResponse && (
-              <div className="bg-green-50 rounded-lg p-3">
-                <p className="text-green-700 text-xs sm:text-sm font-medium">AI Teacher:</p>
-                <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{aiResponse}</p>
+            {/* Display full conversation history */}
+            {(aiState === "speaking" || aiState === "idle") && conversationHistory.length > 0 && (
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {conversationHistory.map((message, index) => (
+                  <div 
+                    key={index} 
+                    className={`rounded-lg p-3 ${
+                      message.role === 'user' 
+                        ? 'bg-blue-50 ml-4' 
+                        : 'bg-green-50 mr-4'
+                    }`}
+                  >
+                    <p className={`text-xs sm:text-sm font-medium ${
+                      message.role === 'user' ? 'text-blue-700' : 'text-green-700'
+                    }`}>
+                      {message.role === 'user' ? 'You said:' : 'AI Teacher:'}
+                    </p>
+                    <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">
+                      {message.content}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
           </div>

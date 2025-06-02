@@ -8,12 +8,13 @@ const openai = new OpenAI({
 interface AITeacherRequest {
   userMessage: string;
   teacherGender: "male" | "female";
+  conversationHistory?: Array<{role: 'user' | 'assistant', content: string}>;
   isWakeWord?: boolean;
   isHintRequest?: boolean;
 }
 
 export async function getAITeacherResponse(request: AITeacherRequest): Promise<string> {
-  const { userMessage, teacherGender, isWakeWord, isHintRequest } = request;
+  const { userMessage, teacherGender, conversationHistory, isWakeWord, isHintRequest } = request;
   
   let systemPrompt = `You are an AI teacher assistant. You are ${teacherGender === "female" ? "a female teacher" : "a male teacher"} helping students learn through voice conversations. 
 
@@ -22,8 +23,9 @@ Key guidelines:
 - Use the Socratic method - ask questions to guide learning rather than giving direct answers
 - Keep responses conversational and under 100 words for voice interaction
 - Adapt to the student's level and provide appropriate explanations
-- If the student says "Excuse me ${teacherGender === "female" ? "Madam" : "Sir"}", greet them warmly and ask how you can help
-- Help with any subject but focus on understanding concepts rather than memorization`;
+- Remember previous parts of the conversation and build upon them
+- Help with any subject but focus on understanding concepts rather than memorization
+- Reference earlier topics when relevant to help reinforce learning`;
 
   if (isHintRequest) {
     systemPrompt += "\n- The student is asking for a hint. Provide a gentle nudge without giving away the answer completely.";
@@ -34,18 +36,29 @@ Key guidelines:
   }
 
   try {
+    // Build messages array with conversation history
+    const messages: Array<{role: 'system' | 'user' | 'assistant', content: string}> = [
+      {
+        role: "system",
+        content: systemPrompt
+      }
+    ];
+
+    // Add conversation history if it exists (last 10 messages to maintain context)
+    if (conversationHistory && conversationHistory.length > 0) {
+      const recentHistory = conversationHistory.slice(-10);
+      messages.push(...recentHistory);
+    }
+
+    // Add the current user message
+    messages.push({
+      role: "user",
+      content: userMessage
+    });
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt
-        },
-        {
-          role: "user",
-          content: userMessage
-        }
-      ],
+      messages: messages,
       max_tokens: 200,
       temperature: 0.7
     });
