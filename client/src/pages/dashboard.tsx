@@ -191,10 +191,10 @@ export default function Dashboard() {
           className="mb-6"
         >
           <Card className="gradient-card border-none">
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="text-center">
-                <h2 className="text-xl font-semibold mb-2">Welcome back, {user.name}!</h2>
-                <p className="text-muted-foreground">
+                <h2 className="text-lg font-semibold mb-1">Welcome back, {user.name}!</h2>
+                <p className="text-muted-foreground text-sm">
                   {user.school} • Grade {user.grade}
                 </p>
               </div>
