@@ -216,7 +216,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI Teacher routes
   app.post("/api/ai-teacher", async (req, res) => {
     try {
-      const { userMessage, teacherGender, isWakeWord, isHintRequest } = req.body;
+      const { userMessage, teacherGender, conversationHistory, isWakeWord, isHintRequest } = req.body;
       
       if (!userMessage || !teacherGender) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -225,6 +225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const response = await getAITeacherResponse({
         userMessage,
         teacherGender,
+        conversationHistory,
         isWakeWord,
         isHintRequest
       });

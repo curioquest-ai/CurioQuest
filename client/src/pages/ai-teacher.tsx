@@ -199,6 +199,9 @@ export default function AITeacher() {
   const getHint = async () => {
     setAiState("processing");
     
+    const hintMessage = "Can you give me a hint?";
+    const newConversationHistory = [...conversationHistory, { role: 'user' as const, content: hintMessage }];
+    
     try {
       const response = await fetch('/api/ai-teacher', {
         method: 'POST',
@@ -206,8 +209,9 @@ export default function AITeacher() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userMessage: "Can you give me a hint?",
+          userMessage: hintMessage,
           teacherGender,
+          conversationHistory: newConversationHistory,
           isHintRequest: true
         }),
       });
@@ -217,12 +221,22 @@ export default function AITeacher() {
       }
       
       const data = await response.json();
+      
+      // Add hint exchange to conversation history
+      const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: data.response }];
+      setConversationHistory(updatedHistory);
+      
       setUserInput("");
       setAiResponse(data.response);
       speakResponse(data.response);
     } catch (error) {
       console.error('Error getting hint:', error);
       const fallbackHint = "Try breaking down the problem into smaller steps and think about what you already know.";
+      
+      // Add fallback hint to conversation history
+      const updatedHistory = [...newConversationHistory, { role: 'assistant' as const, content: fallbackHint }];
+      setConversationHistory(updatedHistory);
+      
       setAiResponse(fallbackHint);
       speakResponse(fallbackHint);
     }
