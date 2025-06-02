@@ -87,17 +87,13 @@ export default function AITeacher() {
 
       {/* Main Content Area */}
       <div className="absolute inset-0" style={{ top: '80px', bottom: '96px' }}>
-        <div className="w-full h-full grid place-items-center">
+        <div className="w-full h-full flex items-center justify-center">
           {widgetLoaded ? (
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6 }}
               style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
                 width: '320px',
                 height: '400px'
               }}
