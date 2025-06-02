@@ -47,9 +47,9 @@ export default function AITeacher() {
 
   const agentConfig = {
     prompt: {
-      prompt: `You are Ms. Priya Sharma, an experienced Indian female school teacher. The student's name is ${user?.name || 'Student'} and they are in grade ${user?.grade || 'unknown'}. Start by greeting them warmly using their name and asking what subject they'd like help with today. Use an assertive but caring teaching style typical of Indian educators.`
+      prompt: `You are Mrs. Asha, an experienced Indian female school teacher. The student's name is ${user?.name || 'Student'} and they are in grade ${user?.grade || 'unknown'}. Start by greeting them warmly using their name and asking what subject they'd like help with today. Use an assertive but caring teaching style typical of Indian educators.`
     },
-    first_message: `Hello ${user?.name || 'Student'}! Welcome to your learning session. I'm Ms. Priya Sharma, your teacher. ${user?.grade ? `Since you're in grade ${user.grade}, ` : ''}I'm here to help you with any subject you're studying. What would you like to learn about today?`
+    first_message: `Hello ${user?.name || 'Student'}! Welcome to your learning session. I'm Mrs. Asha, your AI teacher. ${user?.grade ? `Since you're in grade ${user.grade}, ` : ''}I'm here to help you with any subject you're studying. What would you like to learn about today?`
   };
 
   return (
@@ -62,7 +62,7 @@ export default function AITeacher() {
           </div>
           <div>
             <h1 className="text-white text-xl font-bold">AI Teacher</h1>
-            <p className="text-white/80 text-sm">Ms. Priya Sharma</p>
+            <p className="text-white/80 text-sm">Mrs. Asha</p>
           </div>
         </div>
         
@@ -90,15 +90,7 @@ export default function AITeacher() {
         {/* Widget Area */}
         <div className="flex-1 flex items-start justify-center pt-8">
           {widgetLoaded ? (
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              style={{
-                width: '320px',
-                height: '240px'
-              }}
-            >
+            <div style={{ width: '320px', height: '240px' }}>
               <elevenlabs-convai 
                 agent-id="agent_01jwrh5g9pergrk651t512kmjg"
                 override-agent-config={JSON.stringify(agentConfig)}
@@ -108,7 +100,7 @@ export default function AITeacher() {
                   display: 'block'
                 }}
               />
-            </motion.div>
+            </div>
           ) : (
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -121,7 +113,7 @@ export default function AITeacher() {
               </div>
               
               <div className="space-y-1">
-                <h3 className="text-lg font-bold text-white">Connecting to Ms. Priya</h3>
+                <h3 className="text-lg font-bold text-white">Connecting to Mrs. Asha</h3>
                 <p className="text-white/80 text-xs">Preparing your AI teacher...</p>
               </div>
               
@@ -149,8 +141,8 @@ export default function AITeacher() {
                 <User className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-white font-semibold text-lg">Ms. Priya Sharma</h3>
-                <p className="text-white/70 text-sm">Your AI Learning Assistant</p>
+                <h3 className="text-white font-semibold text-lg">Mrs. Asha</h3>
+                <p className="text-white/70 text-sm">Your AI Teacher</p>
               </div>
             </div>
             <p className="text-white/80 text-sm leading-relaxed">
