@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Settings, Lightbulb, Mic, Volume2, Repeat } from "lucide-react";
+import { Settings, Lightbulb, Mic, Volume2, Repeat, FileText, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import BottomNavigation from "@/components/bottom-navigation";
 
 type AIState = "idle" | "listening" | "processing" | "speaking";
@@ -70,21 +71,36 @@ export default function AITeacher() {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-50 p-4 sm:p-6">
         <div className="flex items-center justify-end">
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm"
-            >
-              Transcript
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
-            >
-              <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
-            </Button>
+          <div className="flex items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
+                >
+                  <Settings className="w-5 h-5 sm:w-6 sm:h-6" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="bg-white/95 backdrop-blur-sm border border-white/20 rounded-xl shadow-2xl min-w-[160px]"
+              >
+                <DropdownMenuItem 
+                  onClick={() => setShowTranscript(!showTranscript)}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span className="text-sm">
+                    {showTranscript ? "Hide Transcript" : "Show Transcript"}
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex items-center gap-2 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer">
+                  <User className="w-4 h-4" />
+                  <span className="text-sm">Change Teacher</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
@@ -297,30 +313,24 @@ export default function AITeacher() {
           </motion.div>
         )}
 
-        {/* Transcript Toggle */}
-        {transcript && (
+        {/* Transcript Display */}
+        {transcript && showTranscript && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-3 sm:mt-4 md:mt-6 px-4"
+            className="mt-3 sm:mt-4 md:mt-6 px-4 w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto"
           >
-            <Button
-              onClick={() => setShowTranscript(!showTranscript)}
-              variant="ghost"
-              className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 text-xs"
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-white text-xs"
             >
-              {showTranscript ? "Hide" : "Show"} Transcript
-            </Button>
-            
-            {showTranscript && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                className="mt-2 bg-white/10 backdrop-blur-sm rounded-lg p-3 text-white text-xs"
-              >
-                {transcript}
-              </motion.div>
-            )}
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="w-3 h-3" />
+                <span className="font-medium">Transcript</span>
+              </div>
+              {transcript}
+            </motion.div>
           </motion.div>
         )}
       </div>
