@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Settings, Lightbulb, Mic, Volume2, Repeat, FileText, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,50 +15,199 @@ export default function AITeacher() {
   const [aiResponse, setAiResponse] = useState("");
   const [userInput, setUserInput] = useState("");
   const [showVisualContent, setShowVisualContent] = useState(true);
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const synthesisRef = useRef<SpeechSynthesis | null>(null);
+
+  // Initialize speech recognition and synthesis
+  useEffect(() => {
+    // Check for Web Speech API support
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const speechSynthesis = window.speechSynthesis;
+    
+    if (SpeechRecognition && speechSynthesis) {
+      setSpeechSupported(true);
+      recognitionRef.current = new SpeechRecognition();
+      synthesisRef.current = speechSynthesis;
+      
+      // Configure speech recognition
+      const recognition = recognitionRef.current;
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      
+      recognition.onstart = () => {
+        setIsListening(true);
+        setAiState("listening");
+      };
+      
+      recognition.onresult = (event) => {
+        const speechResult = event.results[0][0].transcript;
+        setUserInput(speechResult);
+        setTranscript(speechResult);
+        setIsListening(false);
+        handleUserSpeech(speechResult);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+        setAiState("idle");
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Handle user speech input
+  const handleUserSpeech = async (speechText: string) => {
+    setAiState("processing");
+    
+    try {
+      // Check if this is a wake word
+      const wakeWord = `excuse me ${teacherGender === "female" ? "madam" : "sir"}`;
+      const isWakeWord = speechText.toLowerCase().includes(wakeWord);
+      
+      if (isWakeWord || userInput) {
+        // Call OpenAI API for response
+        const response = await fetch('/api/ai-teacher', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userMessage: speechText,
+            teacherGender,
+            isWakeWord
+          }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to get AI response');
+        }
+        
+        const data = await response.json();
+        setAiResponse(data.response);
+        speakResponse(data.response);
+      } else {
+        setAiState("idle");
+      }
+    } catch (error) {
+      console.error('Error processing speech:', error);
+      setAiResponse("I'm sorry, I'm having trouble processing your request right now.");
+      speakResponse("I'm sorry, I'm having trouble processing your request right now.");
+    }
+  };
+
+  // Text-to-speech function
+  const speakResponse = (text: string) => {
+    if (synthesisRef.current) {
+      setAiState("speaking");
+      
+      // Cancel any ongoing speech
+      synthesisRef.current.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.9;
+      utterance.pitch = teacherGender === "female" ? 1.1 : 0.9;
+      utterance.volume = 1;
+      
+      // Try to use appropriate voice
+      const voices = synthesisRef.current.getVoices();
+      const preferredVoice = voices.find(voice => 
+        teacherGender === "female" 
+          ? voice.name.includes('Female') || voice.name.includes('Samantha') || voice.name.includes('Karen')
+          : voice.name.includes('Male') || voice.name.includes('Alex') || voice.name.includes('Daniel')
+      );
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      
+      utterance.onend = () => {
+        setAiState("idle");
+      };
+      
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event.error);
+        setAiState("idle");
+      };
+      
+      synthesisRef.current.speak(utterance);
+    }
+  };
 
   // Voice interaction functions
   const startVoiceInteraction = () => {
-    setAiState("listening");
-    setUserInput("");
-    setAiResponse("");
+    if (!speechSupported) {
+      alert("Speech recognition is not supported in your browser. Please use Chrome or Edge.");
+      return;
+    }
     
-    // Simulate listening process
-    setTimeout(() => {
-      setAiState("processing");
-      setUserInput("I think we should factor the equation first.");
-      setTranscript("I think we should factor the equation first.");
-      
-      // Simulate AI processing and response
-      setTimeout(() => {
-        setAiState("speaking");
-        setAiResponse("Excellent thinking! Yes, factoring is often the first approach. Let's factor x² + 5x - 6. What two numbers multiply to -6 and add to 5?");
-        
-        // After speaking, return to idle
-        setTimeout(() => {
-          setAiState("idle");
-        }, 3000);
-      }, 2000);
-    }, 3000);
+    if (recognitionRef.current && !isListening) {
+      setUserInput("");
+      setAiResponse("");
+      recognitionRef.current.start();
+    }
   };
 
   const stopVoiceInteraction = () => {
+    if (recognitionRef.current && isListening) {
+      recognitionRef.current.stop();
+    }
+    if (synthesisRef.current) {
+      synthesisRef.current.cancel();
+    }
+    setIsListening(false);
     setAiState("idle");
   };
 
   const repeatLastResponse = () => {
-    setAiState("speaking");
-    setTimeout(() => {
-      setAiState("idle");
-    }, 2000);
+    if (aiResponse) {
+      speakResponse(aiResponse);
+    }
   };
 
-  const getHint = () => {
-    setAiState("speaking");
-    setUserInput("");
-    setAiResponse("Here's a hint: Look for two numbers that when multiplied give you -6. Try thinking of factor pairs like 1 and -6, or 2 and -3.");
-    setTimeout(() => {
-      setAiState("idle");
-    }, 2500);
+  const getHint = async () => {
+    setAiState("processing");
+    
+    try {
+      const response = await fetch('/api/ai-teacher', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userMessage: "Can you give me a hint?",
+          teacherGender,
+          isHintRequest: true
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to get hint');
+      }
+      
+      const data = await response.json();
+      setUserInput("");
+      setAiResponse(data.response);
+      speakResponse(data.response);
+    } catch (error) {
+      console.error('Error getting hint:', error);
+      const fallbackHint = "Try breaking down the problem into smaller steps and think about what you already know.";
+      setAiResponse(fallbackHint);
+      speakResponse(fallbackHint);
+    }
   };
 
   return (

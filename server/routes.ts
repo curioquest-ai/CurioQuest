@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertQuizAttemptSchema } from "@shared/schema";
 import { z } from "zod";
+import { getAITeacherResponse } from "./ai-teacher";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // User routes
@@ -212,7 +213,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
+  // AI Teacher routes
+  app.post("/api/ai-teacher", async (req, res) => {
+    try {
+      const { userMessage, teacherGender, isWakeWord, isHintRequest } = req.body;
+      
+      if (!userMessage || !teacherGender) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+      
+      const response = await getAITeacherResponse({
+        userMessage,
+        teacherGender,
+        isWakeWord,
+        isHintRequest
+      });
+      
+      res.json({ response });
+    } catch (error) {
+      console.error('AI Teacher API error:', error);
+      res.status(500).json({ error: "Failed to get AI response" });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;
