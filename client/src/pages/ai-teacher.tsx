@@ -145,28 +145,40 @@ export default function AITeacher() {
       // Try to find Indian English or female voices
       const voices = synthesisRef.current.getVoices();
       
-      // Look for Indian English voices first
+      // Look for Indian English FEMALE voices first
+      const indianFemaleVoice = voices.find(voice => 
+        (voice.lang.includes('en-IN') || 
+         voice.name.toLowerCase().includes('indian')) &&
+        (voice.name.toLowerCase().includes('female') ||
+         voice.name.toLowerCase().includes('woman') ||
+         voice.name.toLowerCase().includes('veena') ||
+         voice.name.toLowerCase().includes('priya') ||
+         voice.name.toLowerCase().includes('kavya'))
+      );
+      
+      // Fallback to any Indian voice
       const indianVoice = voices.find(voice => 
         voice.lang.includes('en-IN') || 
-        voice.name.toLowerCase().includes('indian') ||
-        voice.name.toLowerCase().includes('ravi') ||
-        voice.name.toLowerCase().includes('veena')
+        voice.name.toLowerCase().includes('indian')
       );
       
       // Fallback to quality female voices
       const femaleVoice = voices.find(voice => 
-        voice.name.includes('Female') || 
-        voice.name.includes('Samantha') || 
-        voice.name.includes('Karen') ||
-        voice.name.includes('Zira') ||
-        voice.name.includes('Susan')
+        voice.name.toLowerCase().includes('female') || 
+        voice.name.toLowerCase().includes('samantha') || 
+        voice.name.toLowerCase().includes('karen') ||
+        voice.name.toLowerCase().includes('zira') ||
+        voice.name.toLowerCase().includes('susan') ||
+        voice.name.toLowerCase().includes('helen')
       );
       
-      // Prefer Indian voice, fallback to female voice
-      if (indianVoice) {
-        utterance.voice = indianVoice;
+      // Prefer Indian female voice, then any female voice, then any Indian voice
+      if (indianFemaleVoice) {
+        utterance.voice = indianFemaleVoice;
       } else if (femaleVoice) {
         utterance.voice = femaleVoice;
+      } else if (indianVoice) {
+        utterance.voice = indianVoice;
       }
       
       utterance.onend = () => {
