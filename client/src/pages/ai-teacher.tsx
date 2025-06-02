@@ -59,63 +59,21 @@ export default function AITeacher() {
 
   return (
     <div className="h-screen w-full relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600">
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex justify-end items-center p-4 sm:p-6">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20"
-            >
-              <Settings className="w-6 h-6" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            align="end"
-            className="bg-white/90 backdrop-blur-sm"
-          >
-            <DropdownMenuItem
-              onClick={() => setShowTranscript(!showTranscript)}
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              {showTranscript ? "Hide" : "Show"} Transcript
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => setShowVisualContent(!showVisualContent)}
-            >
-              <User className="w-4 h-4 mr-2" />
-              {showVisualContent ? "Hide" : "Show"} Learning Tips
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+
 
       {/* Widget */}
       {widgetLoaded ? (
-        <div style={{
-          position: "absolute",
-          top: "80px",
-          left: "0",
-          right: "0",
-          bottom: "96px",
-          width: "100%",
-          height: "calc(100vh - 176px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-start",
-          paddingTop: "20px"
-        }}>
-          <elevenlabs-convai
-            agent-id="agent_01jwrh5g9pergrk651t512kmjg"
-            override-agent-config={JSON.stringify(agentConfig)}
-            style={{
-              width: "400px",
-              height: "600px",
-              display: "block"
-            }}
-          />
-        </div>
+        <elevenlabs-convai
+          agent-id="agent_01jwrh5g9pergrk651t512kmjg"
+          override-agent-config={JSON.stringify(agentConfig)}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "80%",
+          }}
+        />
       ) : (
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
