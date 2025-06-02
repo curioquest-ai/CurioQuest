@@ -10,7 +10,7 @@ export default function AITeacher() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [showVisualContent, setShowVisualContent] = useState(true);
 
-  // Load ElevenLabs script
+  // Load ElevenLabs script and check widget status
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
@@ -18,6 +18,14 @@ export default function AITeacher() {
     script.type = 'text/javascript';
     script.onload = () => {
       console.log('ElevenLabs script loaded successfully');
+      // Check if the custom element is defined
+      setTimeout(() => {
+        if (customElements.get('elevenlabs-convai')) {
+          console.log('ElevenLabs custom element is available');
+        } else {
+          console.error('ElevenLabs custom element not found');
+        }
+      }, 1000);
     };
     script.onerror = () => {
       console.error('Failed to load ElevenLabs script');
@@ -25,7 +33,6 @@ export default function AITeacher() {
     document.head.appendChild(script);
 
     return () => {
-      // Cleanup script when component unmounts
       if (document.head.contains(script)) {
         document.head.removeChild(script);
       }
@@ -67,53 +74,38 @@ export default function AITeacher() {
 
       {/* Main Content Area */}
       <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 pb-32 pt-8">
-        {/* ElevenLabs Conversational AI Widget - Main Interface */}
-        <div className="w-full max-w-4xl mx-auto relative z-50">
+        {/* Voice Assistant Interface */}
+        <div className="w-full max-w-2xl mx-auto relative z-50">
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="min-h-[600px] bg-white/10 backdrop-blur-sm rounded-2xl p-6 flex flex-col items-center justify-center"
+            className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center"
           >
-            {/* Teacher Avatar - Smaller version above widget */}
-            {showVisualContent && (
-              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm">
-                <User className="w-10 h-10 text-white" />
+            <div className="mb-6">
+              <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:bg-green-600 transition-colors">
+                <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+                </svg>
               </div>
-            )}
-            
-            {/* Widget Title */}
-            <div className="text-center mb-6">
-              <h2 className="text-white text-xl sm:text-2xl font-bold mb-2">
-                Ms. Priya Sharma
-              </h2>
+              <h3 className="text-white text-xl font-semibold mb-2">Ready to Help</h3>
               <p className="text-white/80 text-sm">
-                Your AI Teaching Assistant
+                Tap the microphone to start your conversation
               </p>
-            </div>
-
-            {/* ElevenLabs Widget */}
-            <div className="w-full bg-white rounded-xl overflow-hidden shadow-2xl">
-              <iframe
-                src="https://elevenlabs.io/convai-widget/agent_01jwrh5g9pergrk651t512kmjg"
-                width="100%"
-                height="450"
-                style={{
-                  border: 'none',
-                  backgroundColor: 'white'
-                }}
-                allow="microphone; camera"
-                title="ElevenLabs Conversational AI - Ms. Priya Sharma"
-              />
             </div>
             
-            {/* Instructions */}
-            <div className="mt-6 text-center">
-              <p className="text-white/70 text-sm max-w-md mx-auto">
-                Start your conversation with Ms. Priya Sharma. She maintains context throughout your learning session.
-              </p>
-            </div>
+            <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+              Start Voice Chat
+            </button>
           </motion.div>
+        </div>
+        
+        {/* Instructions */}
+        <div className="mt-6 text-center">
+          <p className="text-white/70 text-sm max-w-md mx-auto">
+            Your AI teaching assistant is ready to help with any subject. 
+            She maintains context throughout your learning session.
+          </p>
         </div>
 
         {/* Transcript Section */}
