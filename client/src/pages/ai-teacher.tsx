@@ -12,6 +12,7 @@ declare global {
       'elevenlabs-convai': {
         'agent-id': string;
         'override-agent-config'?: string;
+        style?: React.CSSProperties;
         children?: React.ReactNode;
       };
     }
@@ -85,44 +86,58 @@ export default function AITeacher() {
       </div>
 
       {/* Main Content Area */}
-      <div className="absolute inset-0 flex items-center justify-center pt-20 pb-24">
-        {widgetLoaded ? (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center justify-center"
-          >
-            <elevenlabs-convai 
-              agent-id="agent_01jwrh5g9pergrk651t512kmjg"
-              override-agent-config={JSON.stringify(agentConfig)}
-            />
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center justify-center text-center space-y-6"
-          >
-            <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center">
-              <User className="w-12 h-12 text-white" />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-white">Connecting to Ms. Priya</h3>
-              <p className="text-white/80 text-sm">Preparing your AI teacher...</p>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-              <div className="animate-pulse flex justify-center space-x-1">
-                <div className="rounded-full bg-white/60 h-2 w-2"></div>
-                <div className="rounded-full bg-white/60 h-2 w-2 animation-delay-200"></div>
-                <div className="rounded-full bg-white/60 h-2 w-2 animation-delay-400"></div>
+      <div className="absolute inset-0" style={{ top: '80px', bottom: '96px' }}>
+        <div className="w-full h-full grid place-items-center">
+          {widgetLoaded ? (
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '320px',
+                height: '400px'
+              }}
+            >
+              <elevenlabs-convai 
+                agent-id="agent_01jwrh5g9pergrk651t512kmjg"
+                override-agent-config={JSON.stringify(agentConfig)}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  display: 'block'
+                }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center justify-center text-center space-y-6"
+            >
+              <div className="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+                <User className="w-12 h-12 text-white" />
               </div>
-            </div>
-          </motion.div>
-        )}
+              
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white">Connecting to Ms. Priya</h3>
+                <p className="text-white/80 text-sm">Preparing your AI teacher...</p>
+              </div>
+              
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                <div className="animate-pulse flex justify-center space-x-1">
+                  <div className="rounded-full bg-white/60 h-2 w-2"></div>
+                  <div className="rounded-full bg-white/60 h-2 w-2 animation-delay-200"></div>
+                  <div className="rounded-full bg-white/60 h-2 w-2 animation-delay-400"></div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </div>
       </div>
 
       {/* Bottom Navigation */}
