@@ -90,30 +90,30 @@ export default function AITeacher() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-center h-full px-4 sm:px-6 pt-20 pb-32">
+      <div className="flex flex-col items-center justify-center h-full px-3 sm:px-6 pt-16 sm:pt-20 pb-24 sm:pb-32">
         {/* AI State Status */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 sm:mb-8"
+          className="mb-4 sm:mb-6"
         >
-          <h2 className="text-white text-xl sm:text-2xl font-medium text-center mb-2">
+          <h2 className="text-white text-lg sm:text-xl md:text-2xl font-medium text-center mb-1 sm:mb-2">
             {aiState === "listening" ? "Listening..." : 
              aiState === "processing" ? "Processing..." : 
              aiState === "speaking" ? "AI Teacher" : "Ready to help"}
           </h2>
-          <p className="text-white/80 text-sm sm:text-base text-center">
+          <p className="text-white/80 text-xs sm:text-sm md:text-base text-center">
             {voiceHint}
           </p>
         </motion.div>
 
         {/* Animated AI Avatar */}
         <motion.div
-          className="relative mb-8 sm:mb-12"
+          className="relative mb-4 sm:mb-6 md:mb-8"
           animate={aiState === "listening" ? { scale: [1, 1.1, 1] } : aiState === "speaking" ? { scale: [1, 1.05, 1] } : {}}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="w-48 h-48 sm:w-64 sm:h-64 relative">
+          <div className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 relative">
             {/* Outer ring with gradient - animated based on state */}
             <motion.div
               className="absolute inset-0 rounded-full"
@@ -132,11 +132,11 @@ export default function AITeacher() {
             
             {/* Inner circle with state-based appearance */}
             <motion.div 
-              className="absolute inset-4 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center"
+              className="absolute inset-2 sm:inset-4 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center"
               animate={aiState === "speaking" ? { scale: [1, 1.1, 1] } : {}}
               transition={{ duration: 1, repeat: Infinity }}
             >
-              <div className="text-4xl sm:text-5xl">
+              <div className="text-2xl sm:text-4xl md:text-5xl">
                 {aiState === "listening" ? "👂" : 
                  aiState === "processing" ? "🤔" : 
                  aiState === "speaking" ? "🗣️" : "🎓"}
@@ -180,13 +180,13 @@ export default function AITeacher() {
               initial={{ opacity: 0, y: 30, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -30, scale: 0.9 }}
-              className="w-full max-w-2xl mx-auto mb-8 sm:mb-12"
+              className="w-full max-w-sm sm:max-w-lg md:max-w-2xl mx-auto mb-4 sm:mb-6 md:mb-8 px-2"
             >
-              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-2xl">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl">
+                <h3 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800 mb-2 sm:mb-4 text-center">
                   {currentLesson}
                 </h3>
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed text-center">
+                <p className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed text-center">
                   {aiResponse}
                 </p>
               </div>
@@ -195,7 +195,7 @@ export default function AITeacher() {
         </AnimatePresence>
 
         {/* Voice-First Control Interface */}
-        <div className="flex items-center justify-center space-x-6 sm:space-x-8">
+        <div className="flex items-center justify-center space-x-4 sm:space-x-6 md:space-x-8">
           {/* Repeat Button */}
           <div className="text-center">
             <motion.div
@@ -207,12 +207,12 @@ export default function AITeacher() {
                 disabled={aiState === "processing"}
                 variant="ghost"
                 size="icon"
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 mb-2 disabled:opacity-50"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 mb-1 sm:mb-2 disabled:opacity-50"
               >
-                <Repeat className="w-6 h-6 sm:w-8 sm:h-8" />
+                <Repeat className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8" />
               </Button>
             </motion.div>
-            <p className="text-white text-xs sm:text-sm opacity-80">
+            <p className="text-white text-xs opacity-80">
               Repeat
             </p>
           </div>
@@ -226,7 +226,7 @@ export default function AITeacher() {
               <Button
                 onClick={aiState === "listening" ? stopVoiceInteraction : startVoiceInteraction}
                 disabled={aiState === "processing"}
-                className={`w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white/30 mb-2 ${
+                className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-2 border-white/30 mb-1 sm:mb-2 ${
                   aiState === "listening" 
                     ? 'bg-red-500 hover:bg-red-600' 
                     : aiState === "processing"
@@ -239,23 +239,23 @@ export default function AITeacher() {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   >
-                    <Lightbulb className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                   </motion.div>
                 ) : aiState === "listening" ? (
                   <motion.div
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 0.8, repeat: Infinity }}
                   >
-                    <Mic className="w-8 h-8 sm:w-10 sm:h-10" />
+                    <Mic className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                   </motion.div>
                 ) : aiState === "speaking" ? (
-                  <Volume2 className="w-8 h-8 sm:w-10 sm:h-10" />
+                  <Volume2 className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                 ) : (
-                  <Mic className="w-8 h-8 sm:w-10 sm:h-10" />
+                  <Mic className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                 )}
               </Button>
             </motion.div>
-            <p className="text-white text-xs sm:text-sm opacity-80">
+            <p className="text-white text-xs opacity-80">
               {aiState === "listening" ? "Tap to stop" : 
                aiState === "processing" ? "Processing..." : 
                aiState === "speaking" ? "Speaking..." : "Tap to speak"}
@@ -273,12 +273,12 @@ export default function AITeacher() {
                 disabled={aiState === "processing"}
                 variant="ghost"
                 size="icon"
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 mb-2 disabled:opacity-50"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 mb-1 sm:mb-2 disabled:opacity-50"
               >
-                <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8" />
+                <Lightbulb className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8" />
               </Button>
             </motion.div>
-            <p className="text-white text-xs sm:text-sm opacity-80">
+            <p className="text-white text-xs opacity-80">
               Get hint
             </p>
           </div>
@@ -289,9 +289,9 @@ export default function AITeacher() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mt-6 sm:mt-8 text-center"
+            className="mt-3 sm:mt-4 md:mt-6 text-center px-4"
           >
-            <p className="text-white/60 text-xs sm:text-sm">
+            <p className="text-white/60 text-xs leading-relaxed">
               Try saying: "Explain this step" • "I don't understand" • "Give me an example"
             </p>
           </motion.div>
@@ -302,12 +302,12 @@ export default function AITeacher() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 sm:mt-6"
+            className="mt-3 sm:mt-4 md:mt-6 px-4"
           >
             <Button
               onClick={() => setShowTranscript(!showTranscript)}
               variant="ghost"
-              className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 text-xs sm:text-sm"
+              className="bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 text-xs"
             >
               {showTranscript ? "Hide" : "Show"} Transcript
             </Button>
@@ -316,7 +316,7 @@ export default function AITeacher() {
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
-                className="mt-3 bg-white/10 backdrop-blur-sm rounded-lg p-3 text-white text-xs sm:text-sm"
+                className="mt-2 bg-white/10 backdrop-blur-sm rounded-lg p-3 text-white text-xs"
               >
                 {transcript}
               </motion.div>
