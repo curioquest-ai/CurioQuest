@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ import type { User, Subject, UserProgress, Achievement, UserAchievement } from "
 
 export default function Profile() {
   const { user } = useAuth();
+  const [, setLocation] = useLocation();
 
   const { data: subjects = [] } = useQuery<Subject[]>({
     queryKey: ['/api/subjects'],
@@ -386,11 +388,18 @@ export default function Profile() {
                 You're doing amazing! Continue learning to level up and unlock new achievements.
               </p>
               <div className="flex space-x-3">
-                <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white">
+                <Button 
+                  onClick={() => setLocation("/feed")}
+                  className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white"
+                >
                   <BookOpen className="w-4 h-4 mr-2" />
                   Continue Learning
                 </Button>
-                <Button variant="outline" className="flex-1 border-primary/30 hover:bg-primary/5">
+                <Button 
+                  onClick={() => setLocation("/leaderboard")}
+                  variant="outline" 
+                  className="flex-1 border-primary/30 hover:bg-primary/5"
+                >
                   <Users className="w-4 h-4 mr-2" />
                   View Leaderboard
                 </Button>
