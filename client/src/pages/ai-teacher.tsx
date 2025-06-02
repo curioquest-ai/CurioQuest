@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Settings, FileText, User } from "lucide-react";
+import { Settings, FileText, User, Mic, MicOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import BottomNavigation from "@/components/bottom-navigation";
@@ -23,8 +23,11 @@ export default function AITeacher() {
   const [showTranscript, setShowTranscript] = useState(false);
   const [showVisualContent, setShowVisualContent] = useState(true);
   const [widgetLoaded, setWidgetLoaded] = useState(false);
+  const [conversationStarted, setConversationStarted] = useState(false);
+  const [micPermission, setMicPermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
   const { user } = useAuthContext();
   const widgetRef = useRef<HTMLDivElement>(null);
+  const conversationRef = useRef<any>(null);
 
   useEffect(() => {
     // Load ElevenLabs widget script
@@ -44,6 +47,32 @@ export default function AITeacher() {
       document.head.removeChild(script);
     };
   }, []);
+
+  useEffect(() => {
+    const startConversation = async () => {
+      if (widgetLoaded && !conversationStarted) {
+        try {
+          // Request microphone permission
+          await navigator.mediaDevices.getUserMedia({ audio: true });
+          setMicPermission('granted');
+          
+          // Auto-start the conversation
+          const widget = document.querySelector('elevenlabs-convai');
+          if (widget && typeof (widget as any).startSession === 'function') {
+            await (widget as any).startSession({
+              agentId: 'agent_01jwrh5g9pergrk651t512kmjg'
+            });
+            setConversationStarted(true);
+          }
+        } catch (error) {
+          console.error('Failed to start conversation:', error);
+          setMicPermission('denied');
+        }
+      }
+    };
+
+    startConversation();
+  }, [widgetLoaded, conversationStarted]);
 
   const agentConfig = {
     prompt: {
@@ -66,6 +95,26 @@ export default function AITeacher() {
           {user?.grade && ` As a grade ${user.grade} student,`} I can assist you with 
           any subject, answer questions, and guide you through challenging topics.
         </p>
+        
+        {/* Microphone Status */}
+        <div className="mt-4 flex items-center space-x-2">
+          {micPermission === 'granted' ? (
+            <div className="flex items-center space-x-2 text-green-300">
+              <Mic className="w-4 h-4" />
+              <span className="text-xs">Microphone ready</span>
+            </div>
+          ) : micPermission === 'denied' ? (
+            <div className="flex items-center space-x-2 text-red-300">
+              <MicOff className="w-4 h-4" />
+              <span className="text-xs">Microphone access needed</span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2 text-yellow-300">
+              <Mic className="w-4 h-4" />
+              <span className="text-xs">Requesting microphone...</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Widget - Bottom Half */}
