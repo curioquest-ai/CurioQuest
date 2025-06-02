@@ -195,7 +195,9 @@ What would you like to explore today? Feel free to ask me anything!`,
                     : "bg-white shadow-md"
                 }`}>
                   <CardContent className="p-3">
-                    <p className="text-sm leading-relaxed">{message.text}</p>
+                    <p className={`text-sm leading-relaxed whitespace-pre-line ${
+                      message.sender === "user" ? "text-white" : "text-gray-800"
+                    }`}>{message.text}</p>
                     <p className={`text-xs mt-1 opacity-70 ${
                       message.sender === "user" ? "text-white/70" : "text-muted-foreground"
                     }`}>
