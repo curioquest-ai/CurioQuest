@@ -1,0 +1,239 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --background: 215 28% 17%; /* #2D3436 */
+  --foreground: 0 0% 100%; /* #FFFFFF */
+  --muted: 215 28% 25%;
+  --muted-foreground: 0 0% 70%;
+  --popover: 215 28% 17%;
+  --popover-foreground: 0 0% 100%;
+  --card: 215 28% 20%;
+  --card-foreground: 0 0% 100%;
+  --border: 215 28% 30%;
+  --input: 215 28% 25%;
+  --primary: 249 100% 69%; /* #6C5CE7 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 168 100% 36%; /* #00B894 */
+  --secondary-foreground: 0 0% 100%;
+  --accent: 44 100% 70%; /* #FDCB6E */
+  --accent-foreground: 215 28% 17%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 249 100% 69%;
+  --radius: 0.75rem;
+  --chart-1: 249 100% 69%;
+  --chart-2: 168 100% 36%;
+  --chart-3: 44 100% 70%;
+  --chart-4: 16 100% 66%;
+  --chart-5: 142 100% 45%; /* #00E676 */
+  --sidebar-background: 215 28% 17%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 249 100% 69%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 215 28% 25%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 215 28% 30%;
+  --sidebar-ring: 249 100% 69%;
+  
+  /* Success color for achievements and correct answers */
+  --success: 142 100% 45%; /* #00E676 */
+  --success-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 215 28% 17%;
+  --foreground: 0 0% 100%;
+  --muted: 215 28% 25%;
+  --muted-foreground: 0 0% 70%;
+  --popover: 215 28% 17%;
+  --popover-foreground: 0 0% 100%;
+  --card: 215 28% 20%;
+  --card-foreground: 0 0% 100%;
+  --border: 215 28% 30%;
+  --input: 215 28% 25%;
+  --primary: 249 100% 69%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 168 100% 36%;
+  --secondary-foreground: 0 0% 100%;
+  --accent: 44 100% 70%;
+  --accent-foreground: 215 28% 17%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 249 100% 69%;
+  --sidebar-background: 215 28% 17%;
+  --sidebar-foreground: 0 0% 100%;
+  --sidebar-primary: 249 100% 69%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 215 28% 25%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 215 28% 30%;
+  --sidebar-ring: 249 100% 69%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  html, body, #root {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+@layer utilities {
+  .text-success {
+    color: hsl(var(--success));
+  }
+  
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  
+  .border-success {
+    border-color: hsl(var(--success));
+  }
+  
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+  
+  .gradient-card {
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted)));
+  }
+  
+  .video-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%, rgba(0,0,0,0.3) 100%);
+  }
+  
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+  
+  .safe-area-inset {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Custom animations */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.2s ease-out;
+}
+
+/* Video player custom styles */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Swipe indicators */
+.swipe-indicator {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  color: white;
+  font-size: 0.875rem;
+  z-index: 50;
+  transition: opacity 0.3s ease;
+}
+
+.swipe-indicator.top {
+  top: 2rem;
+}
+
+.swipe-indicator.bottom {
+  bottom: 2rem;
+}
+
+/* Progress bar animations */
+.progress-bar {
+  transition: width 0.3s ease;
+}
+
+/* Button hover effects */
+.btn-primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-colors;
+}
+
+.btn-accent {
+  @apply bg-accent text-accent-foreground hover:bg-accent/90 transition-colors;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
