@@ -32,12 +32,10 @@ export default function Onboarding() {
   const { setUser } = useAuth();
 
   const form = useForm({
-    resolver: zodResolver(insertUserSchema.extend({
-      grade: insertUserSchema.shape.grade.transform(val => parseInt(val.toString()))
-    })),
+    resolver: zodResolver(insertUserSchema),
     defaultValues: {
       name: "",
-      grade: "" as any,
+      grade: 6,
       school: "",
     },
   });
@@ -65,10 +63,7 @@ export default function Onboarding() {
   });
 
   const onSubmit = (data: any) => {
-    createUserMutation.mutate({
-      ...data,
-      grade: parseInt(data.grade),
-    });
+    createUserMutation.mutate(data);
   };
 
   return (
@@ -140,7 +135,7 @@ export default function Onboarding() {
               name="grade"
               render={({ field }) => (
                 <FormItem>
-                  <Select onValueChange={field.onChange} value={field.value?.toString()}>
+                  <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value?.toString()}>
                     <FormControl>
                       <SelectTrigger className="glass text-white border-white/30 focus:border-accent bg-white/10">
                         <SelectValue placeholder="Select Grade" className="text-white/70" />
