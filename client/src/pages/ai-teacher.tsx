@@ -76,49 +76,42 @@ export default function AITeacher() {
       </div>
 
       {/* Main Content Area */}
-      <div className="absolute inset-0 flex flex-col" style={{ top: '80px', bottom: '96px' }}>
-        {/* Widget Area */}
-        <div className="flex-1 flex items-start justify-center pt-8">
-          {widgetLoaded ? (
-            <div style={{ width: '320px', height: '240px' }}>
-              <elevenlabs-convai 
-                agent-id="agent_01jwrh5g9pergrk651t512kmjg"
-                override-agent-config={JSON.stringify(agentConfig)}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  display: 'block'
-                }}
-              />
+      <div className="absolute inset-0" style={{ top: '80px', bottom: '96px' }}>
+        {widgetLoaded ? (
+          <elevenlabs-convai 
+            agent-id="agent_01jwrh5g9pergrk651t512kmjg"
+            override-agent-config={JSON.stringify(agentConfig)}
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'block'
+            }}
+          />
+        ) : (
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center justify-center text-center space-y-4 h-full"
+          >
+            <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center">
+              <User className="w-8 h-8 text-white" />
             </div>
-          ) : (
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-col items-center justify-center text-center space-y-4"
-            >
-              <div className="w-16 h-16 mx-auto bg-white/20 rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
+            
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-white">Connecting to Mrs. Asha</h3>
+              <p className="text-white/80 text-xs">Preparing your AI teacher...</p>
+            </div>
+            
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+              <div className="animate-pulse flex justify-center space-x-1">
+                <div className="rounded-full bg-white/60 h-1.5 w-1.5"></div>
+                <div className="rounded-full bg-white/60 h-1.5 w-1.5 animation-delay-200"></div>
+                <div className="rounded-full bg-white/60 h-1.5 w-1.5 animation-delay-400"></div>
               </div>
-              
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-white">Connecting to Mrs. Asha</h3>
-                <p className="text-white/80 text-xs">Preparing your AI teacher...</p>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                <div className="animate-pulse flex justify-center space-x-1">
-                  <div className="rounded-full bg-white/60 h-1.5 w-1.5"></div>
-                  <div className="rounded-full bg-white/60 h-1.5 w-1.5 animation-delay-200"></div>
-                  <div className="rounded-full bg-white/60 h-1.5 w-1.5 animation-delay-400"></div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </div>
-
-
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {/* Bottom Navigation */}
