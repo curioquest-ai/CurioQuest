@@ -22,12 +22,24 @@ export default function VideoPlayer({ video, onVideoEnd, className = "" }: Video
 
   // Reset thumbnail when video changes
   useEffect(() => {
+    const videoElement = videoRef.current;
+    
     if (thumbnailUrl) {
       URL.revokeObjectURL(thumbnailUrl);
       setThumbnailUrl(null);
     }
+    
+    // Stop and reset video when changing to a new video
+    if (videoElement) {
+      videoElement.pause();
+      videoElement.currentTime = 0;
+      videoElement.load(); // Reset the video element
+    }
+    
     setVideoLoaded(false);
     setVideoError(false);
+    setIsPlaying(true); // Reset to auto-play state
+    setProgress(0);
   }, [video.id]);
 
   useEffect(() => {
