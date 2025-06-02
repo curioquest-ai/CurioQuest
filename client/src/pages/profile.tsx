@@ -18,6 +18,7 @@ import {
   Star,
   TrendingUp,
   Award,
+  ArrowLeft,
   Crown,
   Flame,
   ChevronRight,
@@ -102,12 +103,20 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      {/* Header Section */}
+      {/* Header with Back Button */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="relative bg-gradient-to-r from-primary to-accent text-white p-6 pb-16"
       >
+        <Button
+          onClick={() => setLocation("/feed")}
+          variant="ghost"
+          size="icon"
+          className="absolute top-4 left-4 text-white hover:bg-white/20"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </Button>
         <div className="absolute top-4 right-4 flex space-x-2">
           <Button variant="secondary" size="sm" className="bg-white/20 hover:bg-white/30 text-white border-white/30">
             <Settings className="w-4 h-4" />
