@@ -49,44 +49,30 @@ export default function AITeacher() {
   }, []);
 
   useEffect(() => {
-    const requestMicrophonePermission = async () => {
-      try {
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-        setMicPermission('granted');
-      } catch (error) {
-        console.error('Microphone permission denied:', error);
-        setMicPermission('denied');
-      }
-    };
-
-    if (widgetLoaded) {
-      requestMicrophonePermission();
-    }
-  }, [widgetLoaded]);
-
-  useEffect(() => {
-    const handleWidgetLoad = () => {
-      if (micPermission === 'granted' && !conversationStarted) {
-        // Add auto-start configuration to widget
-        const widget = document.querySelector('elevenlabs-convai');
-        if (widget) {
-          // Try to trigger the start button automatically
-          setTimeout(() => {
-            const startButton = widget.shadowRoot?.querySelector('button') || 
-                              widget.querySelector('button');
-            if (startButton) {
-              (startButton as HTMLButtonElement).click();
-              setConversationStarted(true);
-            }
-          }, 1000);
+    const startConversation = async () => {
+      if (widgetLoaded && !conversationStarted) {
+        try {
+          // Request microphone permission
+          await navigator.mediaDevices.getUserMedia({ audio: true });
+          setMicPermission('granted');
+          
+          // Auto-start the conversation
+          const widget = document.querySelector('elevenlabs-convai');
+          if (widget && typeof (widget as any).startSession === 'function') {
+            await (widget as any).startSession({
+              agentId: 'agent_01jwrh5g9pergrk651t512kmjg'
+            });
+            setConversationStarted(true);
+          }
+        } catch (error) {
+          console.error('Failed to start conversation:', error);
+          setMicPermission('denied');
         }
       }
     };
 
-    if (widgetLoaded && micPermission === 'granted') {
-      handleWidgetLoad();
-    }
-  }, [widgetLoaded, micPermission, conversationStarted]);
+    startConversation();
+  }, [widgetLoaded, conversationStarted]);
 
   const agentConfig = {
     prompt: {
