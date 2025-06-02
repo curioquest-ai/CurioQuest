@@ -251,7 +251,7 @@ export class MemStorage implements IStorage {
     this.users.set(id, user);
     
     // Initialize user progress for all subjects
-    for (const subject of this.subjects.values()) {
+    for (const subject of Array.from(this.subjects.values())) {
       const progressKey = `${id}-${subject.id}`;
       const progress: UserProgress = {
         id: this.currentUserProgressId++,
