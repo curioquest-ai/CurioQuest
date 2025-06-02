@@ -16,6 +16,12 @@ export default function AITeacher() {
     script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
     script.async = true;
     script.type = 'text/javascript';
+    script.onload = () => {
+      console.log('ElevenLabs script loaded successfully');
+    };
+    script.onerror = () => {
+      console.error('Failed to load ElevenLabs script');
+    };
     document.head.appendChild(script);
 
     return () => {
@@ -84,32 +90,20 @@ export default function AITeacher() {
         </div>
 
         {/* ElevenLabs Conversational AI Widget */}
-        <div className="w-full max-w-4xl mx-auto relative z-50 min-h-[400px] flex items-center justify-center">
-          <elevenlabs-convai agent-id="agent_01jwrh5g9pergrk651t512kmjg"></elevenlabs-convai>
+        <div className="w-full max-w-4xl mx-auto relative z-50 min-h-[500px] bg-white/10 backdrop-blur-sm rounded-lg p-6 flex items-center justify-center">
+          <iframe
+            src="https://elevenlabs.io/convai-widget/agent_01jwrh5g9pergrk651t512kmjg"
+            width="100%"
+            height="400"
+            style={{
+              border: 'none',
+              borderRadius: '8px',
+              backgroundColor: 'white'
+            }}
+            allow="microphone; camera"
+            title="ElevenLabs Conversational AI"
+          />
         </div>
-        
-        {/* Custom CSS to fix ElevenLabs dialog positioning */}
-        <style>{`
-          elevenlabs-convai {
-            position: relative !important;
-            z-index: 9999 !important;
-          }
-          
-          elevenlabs-convai * {
-            z-index: 9999 !important;
-          }
-          
-          /* Ensure modal dialogs are properly positioned */
-          [role="dialog"], .modal, .dialog {
-            position: fixed !important;
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            z-index: 10000 !important;
-            max-height: 90vh !important;
-            overflow-y: auto !important;
-          }
-        `}</style>
 
         {/* Transcript Section */}
         {showTranscript && (
