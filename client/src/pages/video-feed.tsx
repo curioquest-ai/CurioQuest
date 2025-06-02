@@ -52,14 +52,14 @@ export default function VideoFeed() {
     const timer = setInterval(() => {
       setTimeWatched(prev => prev + 1);
       
-      // Trigger quiz after 2 minutes (120 seconds) or 4 videos
-      if (timeWatched >= 120 || videosWatched >= 4) {
+      // Trigger quiz after 2 minutes (120 seconds) or when reaching the 4th video (index 3)
+      if (timeWatched >= 120 || currentVideoIndex >= 3) {
         setLocation("/quiz");
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeWatched, videosWatched, setLocation]);
+  }, [timeWatched, currentVideoIndex, setLocation]);
 
   // Handle video completion
   const handleVideoComplete = () => {
@@ -196,9 +196,9 @@ export default function VideoFeed() {
     );
   }
 
-  const progressPercent = Math.min((videosWatched / 4) * 100, 100);
+  const progressPercent = Math.min(((currentVideoIndex + 1) / 4) * 100, 100);
   const timeUntilQuiz = Math.max(120 - timeWatched, 0);
-  const videosUntilQuiz = Math.max(4 - videosWatched, 0);
+  const videosUntilQuiz = Math.max(4 - (currentVideoIndex + 1), 0);
 
   return (
     <div 
@@ -252,7 +252,7 @@ export default function VideoFeed() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="fixed top-3 left-1/2 transform -translate-x-1/2 z-50"
+        className="fixed top-3 left-1/2 -translate-x-1/2 z-50"
       >
         <div className="bg-black/90 backdrop-blur-xl rounded-full px-3 py-1.5 shadow-2xl border border-white/10">
           <div className="flex items-center space-x-2 text-white text-xs">
@@ -262,11 +262,11 @@ export default function VideoFeed() {
                 <motion.div
                   key={i}
                   className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                    i < videosWatched ? 'bg-green-400' : 
-                    i === videosWatched ? 'bg-white' : 
+                    i < currentVideoIndex ? 'bg-green-400' : 
+                    i === currentVideoIndex ? 'bg-white' : 
                     'bg-white/20'
                   }`}
-                  animate={i === videosWatched ? { scale: [1, 1.4, 1] } : {}}
+                  animate={i === currentVideoIndex ? { scale: [1, 1.4, 1] } : {}}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
               ))}
