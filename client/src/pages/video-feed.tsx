@@ -229,33 +229,7 @@ export default function VideoFeed() {
         className="absolute inset-0"
       />
 
-      {/* Click zones for navigation */}
-      <div className="absolute inset-0 flex flex-col z-10 pointer-events-none">
-        {/* Previous video zone (top half) */}
-        <div 
-          className="w-full h-1/2 pointer-events-auto cursor-pointer flex items-center justify-center group"
-          onClick={(e) => {
-            e.stopPropagation();
-            previousVideo();
-          }}
-        >
-          <div className="opacity-0 group-active:opacity-50 bg-white/20 rounded-full p-3 transition-opacity">
-            <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent rotate-90"></div>
-          </div>
-        </div>
-        {/* Next video zone (bottom half) */}
-        <div 
-          className="w-full h-1/2 pointer-events-auto cursor-pointer flex items-center justify-center group"
-          onClick={(e) => {
-            e.stopPropagation();
-            nextVideo();
-          }}
-        >
-          <div className="opacity-0 group-active:opacity-50 bg-white/20 rounded-full p-3 transition-opacity">
-            <div className="w-0 h-0 border-l-[12px] border-l-white border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent -rotate-90"></div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Video overlay gradient */}
       <div className="absolute inset-0 video-overlay pointer-events-none" />
