@@ -55,17 +55,7 @@ export default function AITeacher() {
   return (
     <div className="h-screen w-full relative overflow-hidden bg-gradient-to-br from-purple-500 via-purple-600 to-blue-600">
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center p-4 sm:p-6">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="text-white text-xl font-bold">AI Teacher</h1>
-            <p className="text-white/80 text-sm">Mrs. Asha</p>
-          </div>
-        </div>
-        
+      <div className="absolute top-0 left-0 right-0 z-20 flex justify-end items-center p-4 sm:p-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
