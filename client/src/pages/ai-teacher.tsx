@@ -127,7 +127,7 @@ export default function AITeacher() {
     }
   };
 
-  // Text-to-speech function
+  // Text-to-speech function with Indian female voice
   const speakResponse = (text: string) => {
     if (synthesisRef.current) {
       setAiState("speaking");
@@ -136,20 +136,37 @@ export default function AITeacher() {
       synthesisRef.current.cancel();
       
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = teacherGender === "female" ? 1.1 : 0.9;
-      utterance.volume = 1;
       
-      // Try to use appropriate voice
+      // Configure for assertive Indian school teacher tone
+      utterance.rate = 0.85; // Slightly slower for authority and clarity
+      utterance.pitch = 1.0; // Neutral pitch for assertiveness
+      utterance.volume = 0.95; // Higher volume for authority
+      
+      // Try to find Indian English or female voices
       const voices = synthesisRef.current.getVoices();
-      const preferredVoice = voices.find(voice => 
-        teacherGender === "female" 
-          ? voice.name.includes('Female') || voice.name.includes('Samantha') || voice.name.includes('Karen')
-          : voice.name.includes('Male') || voice.name.includes('Alex') || voice.name.includes('Daniel')
+      
+      // Look for Indian English voices first
+      const indianVoice = voices.find(voice => 
+        voice.lang.includes('en-IN') || 
+        voice.name.toLowerCase().includes('indian') ||
+        voice.name.toLowerCase().includes('ravi') ||
+        voice.name.toLowerCase().includes('veena')
       );
       
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
+      // Fallback to quality female voices
+      const femaleVoice = voices.find(voice => 
+        voice.name.includes('Female') || 
+        voice.name.includes('Samantha') || 
+        voice.name.includes('Karen') ||
+        voice.name.includes('Zira') ||
+        voice.name.includes('Susan')
+      );
+      
+      // Prefer Indian voice, fallback to female voice
+      if (indianVoice) {
+        utterance.voice = indianVoice;
+      } else if (femaleVoice) {
+        utterance.voice = femaleVoice;
       }
       
       utterance.onend = () => {
